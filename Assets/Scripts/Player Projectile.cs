@@ -8,6 +8,7 @@ public class PlayerProjectile : MonoBehaviour
     [SerializeField] private float speed = 8.0f;
     private Vector3 destination;
     private Vector3 direction;
+    private bool offScreen = false;
     // Start is called before the first frame update
     void Start()
     {
@@ -29,6 +30,14 @@ public class PlayerProjectile : MonoBehaviour
     }
     // Destroy if off screen.
     void OnBecameInvisible() {
+        offScreen = true;
         Destroy(gameObject);
+    }
+    // TODO: ON DESTROY, CREATE VISUAL EFFECT AND SOUND IF OFFSCREEN IS FALSE.
+    private void OnDestroy()
+    {
+        if (!offScreen) { 
+        // VISUAL EFFECT AND SOUND.
+        } 
     }
 }
