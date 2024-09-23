@@ -47,5 +47,7 @@ public class PlayerControls : MonoBehaviour
     // Take Damage.
     public void DamagePlayer() {
         health--;
+        // Die if health is zero.
+        if (health <= 0) gameObject.SetActive(false);
     }
 }

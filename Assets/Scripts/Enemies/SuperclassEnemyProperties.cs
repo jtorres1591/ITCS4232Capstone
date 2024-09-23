@@ -33,6 +33,12 @@ public class SuperclassEnemyProperties : MonoBehaviour
     private Transform playerTransform;
     // Physics reference. Finds direction projectile hits from.
     Vector3 projectileDirection;
+    // Enemy actions.
+    private enum EnemyAction { 
+    Wander,
+    Chase
+    }
+    private EnemyAction currentAction;
     // Start is called before the first frame update
     void Start()
     {
@@ -46,20 +52,31 @@ public class SuperclassEnemyProperties : MonoBehaviour
         // Initialize Wandering.
         startPos = transform.position;
         SetWanderGoal();
+        currentAction = EnemyAction.Wander;
     }
 
     // Update is called once per frame
     void Update()
     {
+        
         // Wander so long as enemy either has not had aggro triggered or health has not run out.
-        if (health >= 1.0f && !aggro) Wander();
+        if (health >= 1.0f && !aggro) currentAction = EnemyAction.Wander;
         // If enemy is alive and aggro is active, aggro call.
         if (health >= 1.0f && aggro) AggroCall();
         // If enemy is alive, aggro is off, and player exists, check distance.
         if (health >= 1.0f && !aggro && playerTransform != null) DistanceCheck();
         // If enemy is alive and aggro is on, chase.
-        if (health >= 1.0f && aggro) Chase();
+        if (health >= 1.0f && aggro) currentAction = EnemyAction.Chase;
+        // Select action based on Enum. Make sure this is last in Update.
+        switch (currentAction) { 
+            case EnemyAction.Wander:
+                Wander(); break;
+            case EnemyAction.Chase:
+                Chase(); break;
+        }
     }
+
+
     // Damage player on collision.
     public void OnCollisionEnter2D(Collision2D collision)
     {
