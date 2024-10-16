@@ -2,6 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEditor.Rendering;
 using UnityEngine;
+using TMPro;
 
 public class PlayerControls : MonoBehaviour
 {
@@ -9,11 +10,20 @@ public class PlayerControls : MonoBehaviour
     [SerializeField] private GameObject playerProjectile;
     // Player Stats
     [SerializeField] private float walkSpeed = 1.0f;
-    [SerializeField] private float health = 3.0f;
+    [SerializeField] private float maxHealth = 3.0f;
+    private float health;
+    // GameManager
+    private GameManager gameManager;
+    // UI
+    public TextMeshProUGUI healthText;
     // Start is called before the first frame update
     void Start()
     {
-        
+        // Initialize Health.
+        health = maxHealth;
+        healthText.text = "Health: " + health;
+        // GameManager.
+        gameManager = GameObject.Find("GameManager").GetComponent<GameManager>();
     }
 
     // Update is called once per frame
@@ -47,7 +57,17 @@ public class PlayerControls : MonoBehaviour
     // Take Damage.
     public void DamagePlayer() {
         health--;
+        // Update Health Text.
+        healthText.text = "Health: " + health;
         // Die if health is zero.
-        if (health <= 0) gameObject.SetActive(false);
+        if (health <= 0) PlayerDeath();
     }
+    // Player Death. Can be called manually if instant-death is implemented.
+    public void PlayerDeath() {
+        // Game Over
+        gameManager.GameOver();
+        // Deactivating is safer, so it is better than destroying the player object.
+        gameObject.SetActive(false);
+    }
+
 }
