@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using UnityEditor.Rendering;
 using UnityEngine;
 using TMPro;
+using JetBrains.Annotations;
 
 public class PlayerControls : MonoBehaviour
 {
@@ -11,7 +12,9 @@ public class PlayerControls : MonoBehaviour
     // Player Stats
     [SerializeField] private float walkSpeed = 1.0f;
     [SerializeField] private float maxHealth = 3.0f;
+    [SerializeField] private float overHealTime = 4.0f;
     private float health;
+    public bool overHeal = false;
     // GameManager
     private GameManager gameManager;
     // UI
@@ -29,6 +32,7 @@ public class PlayerControls : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
+        Debug.Log(healthText.color);
         // Walk
         PlayerMovement();
         // Shoot on Left Mouse Click.
@@ -61,6 +65,36 @@ public class PlayerControls : MonoBehaviour
         healthText.text = "Health: " + health;
         // Die if health is zero.
         if (health <= 0) PlayerDeath();
+    }
+    // Heal Player.
+    public void HealPlayer(float healHealth) {
+        health+= healHealth;
+        
+        // Update Health Text.
+        UpdateHealthText();
+    }
+    // Over time, gradually reduce overheal.
+    public IEnumerator OverHeal(float overHealTime) { 
+        yield return new WaitForSeconds(overHealTime);
+        health--;
+        // Update Health Text.
+        UpdateHealthText();
+
+    }
+    public void UpdateHealthText() {
+        // Set Overheal if it is true. If true, UI turns green, if false, it turns white.
+        if (health > maxHealth)
+        {
+            overHeal = true;
+            StartCoroutine(OverHeal(overHealTime));
+            healthText.color = Color.green;
+        }
+        else { 
+            overHeal=false;
+            StopCoroutine(OverHeal(overHealTime));
+            healthText.color = Color.white;
+        }
+        healthText.text = "Health: " + health;
     }
     // Player Death. Can be called manually if instant-death is implemented.
     public void PlayerDeath() {
