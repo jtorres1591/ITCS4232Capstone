@@ -15,6 +15,7 @@ public class PlayerControls : MonoBehaviour
     [SerializeField] private float overHealTime = 4.0f;
     private float health;
     public bool overHeal = false;
+    private bool alreadyOverHeal = false;
     // GameManager
     private GameManager gameManager;
     // UI
@@ -32,7 +33,6 @@ public class PlayerControls : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        Debug.Log(healthText.color);
         // Walk
         PlayerMovement();
         // Shoot on Left Mouse Click.
@@ -62,7 +62,7 @@ public class PlayerControls : MonoBehaviour
     public void DamagePlayer() {
         health--;
         // Update Health Text.
-        healthText.text = "Health: " + health;
+        UpdateHealthText();
         // Die if health is zero.
         if (health <= 0) PlayerDeath();
     }
@@ -76,21 +76,24 @@ public class PlayerControls : MonoBehaviour
     // Over time, gradually reduce overheal.
     public IEnumerator OverHeal(float overHealTime) { 
         yield return new WaitForSeconds(overHealTime);
-        health--;
+        if (overHeal) health--;
         // Update Health Text.
         UpdateHealthText();
-
+        // Repeat if overheal is still active.
+        if (health > maxHealth) StartCoroutine(OverHeal(overHealTime));
     }
     public void UpdateHealthText() {
         // Set Overheal if it is true. If true, UI turns green, if false, it turns white.
         if (health > maxHealth)
         {
             overHeal = true;
-            StartCoroutine(OverHeal(overHealTime));
+            if(!alreadyOverHeal) StartCoroutine(OverHeal(overHealTime));
+            alreadyOverHeal = true;
             healthText.color = Color.green;
         }
         else { 
             overHeal=false;
+            alreadyOverHeal = false;
             StopCoroutine(OverHeal(overHealTime));
             healthText.color = Color.white;
         }
@@ -103,5 +106,5 @@ public class PlayerControls : MonoBehaviour
         // Deactivating is safer, so it is better than destroying the player object.
         gameObject.SetActive(false);
     }
-
+    
 }

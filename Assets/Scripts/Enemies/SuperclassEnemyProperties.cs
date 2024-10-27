@@ -20,6 +20,7 @@ public class SuperclassEnemyProperties : MonoBehaviour
     // Launching Stats.
     [SerializeField] protected float launchSpeed = 20.0f;
     [SerializeField] protected float launchTime = 4.0f;
+    [SerializeField] protected float launchMass = 1.0f;
     // Wandering Stats.
     [SerializeField] protected float wanderRange = 5.0f;
     [SerializeField] protected float wanderInterval = 4.0f;
@@ -29,6 +30,9 @@ public class SuperclassEnemyProperties : MonoBehaviour
     // Invincibility frame to prevent the same bullet from damaging twice.
     private bool vulnerable = true;
     [SerializeField] private float damageCooldown = 0.1f;
+    // Item Drop. Randomize a number from 0 to 63, and if it is below dropRate, the item drops.
+    [SerializeField] private GameObject dropItem;
+    [SerializeField] private float dropRate;
     // Player reference.
     private Transform playerTransform;
     // Physics reference. Finds direction projectile hits from.
@@ -85,7 +89,15 @@ public class SuperclassEnemyProperties : MonoBehaviour
         {
             playerScript.DamagePlayer();
         }
-
+        // Case for launched enemy colliding with enemy.
+        if (collision.gameObject.CompareTag("PlayerAttack")) {
+            // Remember direction projectile hit from.
+            projectileDirection = -(collision.transform.position - transform.position).normalized;
+            // Destroy the player's bullet that hit.
+            Destroy(collision.gameObject);
+            // Damage enemy.
+            DamageEnemy();
+        }
     }
     // Attack Collision
     public void OnTriggerEnter2D(Collider2D other)
@@ -130,13 +142,17 @@ public class SuperclassEnemyProperties : MonoBehaviour
         vulnerable = true;
     }
     // Launch enemy and set a timer before destroying the Game Object.
-    public void Launch(Vector3 direction) {
+    public void Launch(Vector2 direction) {
+        // Chance to drop item.
+        ItemDrop();
+        // Change Mass.
+        enemyRb.mass = launchMass;
         // Unfreeze Constraints.
         enemyRb.constraints = RigidbodyConstraints2D.None;
         // Set tag to PlayerAttack.
         gameObject.tag = "PlayerAttack";
         // Set IsTrigger to true.
-        enemyCollider.isTrigger = true;
+        //enemyCollider.isTrigger = true;
         // Apply force.
         enemyRb.AddForce(direction * launchSpeed, ForceMode2D.Impulse);
         // Trigger countdown for enemy death.
@@ -207,6 +223,18 @@ public class SuperclassEnemyProperties : MonoBehaviour
     private void Chase() {
         Vector2 direction = (playerTransform.position - transform.position).normalized;
         transform.position = Vector2.MoveTowards(transform.position, playerTransform.position, speed * Time.deltaTime);
+    }
+    // Chance of dropping item on death.
+    private void ItemDrop() {
+        // If there is no item to be dropped, do nothing at all.
+        if (dropItem != null)
+        {
+            float RNG = Random.Range(0, 64);
+            if (RNG <= dropRate)
+            {
+                Instantiate(dropItem, transform.position, transform.rotation);
+            }
+        }
     }
     // FINAL LINE; PUT METHODS ABOVE HERE.
 }
