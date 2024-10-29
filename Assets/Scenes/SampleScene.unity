@@ -500,7 +500,11 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 3139455134237727560, guid: 3326c9389bee8ca45a04a3490c0df0b7, type: 3}
       propertyPath: m_Mass
-      value: 10
+      value: 7
+      objectReference: {fileID: 0}
+    - target: {fileID: 3139455134237727560, guid: 3326c9389bee8ca45a04a3490c0df0b7, type: 3}
+      propertyPath: m_Material
+      value: 
       objectReference: {fileID: 0}
     - target: {fileID: 3139455134237727560, guid: 3326c9389bee8ca45a04a3490c0df0b7, type: 3}
       propertyPath: m_Constraints
@@ -734,7 +738,7 @@ Rigidbody2D:
   m_Simulated: 1
   m_UseFullKinematicContacts: 0
   m_UseAutoMass: 0
-  m_Mass: 1
+  m_Mass: 1000
   m_LinearDrag: 0
   m_AngularDrag: 0.05
   m_GravityScale: 1
@@ -1468,7 +1472,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 3139455134237727560, guid: 3326c9389bee8ca45a04a3490c0df0b7, type: 3}
       propertyPath: m_Mass
-      value: 10
+      value: 7
       objectReference: {fileID: 0}
     - target: {fileID: 3139455134237727560, guid: 3326c9389bee8ca45a04a3490c0df0b7, type: 3}
       propertyPath: m_Material

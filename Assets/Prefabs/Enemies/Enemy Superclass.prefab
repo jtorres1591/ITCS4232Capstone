@@ -106,11 +106,13 @@ MonoBehaviour:
   callRange: 8
   launchSpeed: 20
   launchTime: 3
+  launchMass: 1
   wanderRange: 5
   wanderInterval: 4
   damageCooldown: 0.1
   dropItem: {fileID: 5355967356032062373, guid: 61dfe1e1c06c02542968e28e81aa17cf, type: 3}
   dropRate: 32
+  launchMaterial: {fileID: 6200000, guid: f1627a6952c07394eb0cbe81293b32b5, type: 2}
 --- !u!50 &3139455134237727560
 Rigidbody2D:
   serializedVersion: 4
@@ -123,7 +125,7 @@ Rigidbody2D:
   m_Simulated: 1
   m_UseFullKinematicContacts: 0
   m_UseAutoMass: 0
-  m_Mass: 1
+  m_Mass: 7
   m_LinearDrag: 0
   m_AngularDrag: 0.05
   m_GravityScale: 0

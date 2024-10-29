@@ -37,10 +37,13 @@ public class SuperclassEnemyProperties : MonoBehaviour
     private Transform playerTransform;
     // Physics reference. Finds direction projectile hits from.
     Vector3 projectileDirection;
+    [SerializeField] private PhysicsMaterial2D launchMaterial;
     // Enemy actions.
     private enum EnemyAction { 
     Wander,
-    Chase
+    Chase,
+    Strafe,
+    Launched
     }
     private EnemyAction currentAction;
     // Start is called before the first frame update
@@ -77,6 +80,10 @@ public class SuperclassEnemyProperties : MonoBehaviour
                 Wander(); break;
             case EnemyAction.Chase:
                 Chase(); break;
+            case EnemyAction.Strafe:
+                break;
+            case EnemyAction.Launched:
+                break;
         }
     }
 
@@ -129,7 +136,9 @@ public class SuperclassEnemyProperties : MonoBehaviour
             Launch(projectileDirection);
             //EnemyDeath();
         }
-        else { 
+        else {
+            // TEST: DOES TEMPORARILY STOPPING MOVEMENT STOP THE PERMANENT WRONG MOVEMENT AFTER DAMAGE. IT SEEMS SO, BUT CHECK BACK ON THIS LATER.
+            enemyRb.velocity = Vector2.zero;
             // TODO: ADD SOUND EFFECT.
         }
        
@@ -143,6 +152,10 @@ public class SuperclassEnemyProperties : MonoBehaviour
     }
     // Launch enemy and set a timer before destroying the Game Object.
     public void Launch(Vector2 direction) {
+        // Set enemy action. The enemy should not be able to move independently while launched.
+        currentAction = EnemyAction.Launched;
+        // Change Physics Material.
+        enemyCollider.sharedMaterial = launchMaterial;
         // Chance to drop item.
         ItemDrop();
         // Change Mass.
@@ -151,7 +164,7 @@ public class SuperclassEnemyProperties : MonoBehaviour
         enemyRb.constraints = RigidbodyConstraints2D.None;
         // Set tag to PlayerAttack.
         gameObject.tag = "PlayerAttack";
-        // Set IsTrigger to true.
+        // Set IsTrigger to true. TODO: MAY NOT BE NECCESSARY.
         //enemyCollider.isTrigger = true;
         // Apply force.
         enemyRb.AddForce(direction * launchSpeed, ForceMode2D.Impulse);
