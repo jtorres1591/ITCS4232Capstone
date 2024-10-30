@@ -27,6 +27,11 @@ public class SuperclassEnemyProperties : MonoBehaviour
     private float wanderTimer = 0.0f;
     private Vector2 startPos;
     private Vector2 wanderPos;
+    // Attacking Stats.
+    // If attackInterval is zero, attacks will not occur.
+    [SerializeField] private float attackInterval = 4.0f;
+    [SerializeField] private GameObject enemyAttack;
+    private bool attackCooldown = false;
     // Invincibility frame to prevent the same bullet from damaging twice.
     private bool vulnerable = true;
     [SerializeField] private float damageCooldown = 0.1f;
@@ -65,7 +70,8 @@ public class SuperclassEnemyProperties : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        
+        // Enemy Behavior.
+        EnemyBehavior();
         // Wander so long as enemy either has not had aggro triggered or health has not run out.
         if (health >= 1.0f && !aggro) currentAction = EnemyAction.Wander;
         // If enemy is alive and aggro is active, aggro call.
@@ -87,8 +93,17 @@ public class SuperclassEnemyProperties : MonoBehaviour
         }
     }
     // Override this function in child classes. Doing so will change the conditions for behaviors.
-    private void EnemyBehavior() { 
-    
+    private void EnemyBehavior() {
+        // TODO: put everything in Update above the switch here, then put this in Update.
+        // Attack Intervals. First checks for cooldown, interval, and that the attack is not null.
+        if (!attackCooldown && attackInterval > 0.0f && enemyAttack != null) StartCoroutine(EnemyAttack());
+    }
+    // Create Projectiles on an interval.
+    private IEnumerator EnemyAttack() {
+        attackCooldown = true;
+        yield return new WaitForSeconds(attackInterval);
+        Instantiate(enemyAttack, transform.position, transform.rotation);
+        attackCooldown = false;
     }
     // Damage player on collision.
     public void OnCollisionEnter2D(Collision2D collision)
