@@ -40,4 +40,9 @@ public class PlayerProjectile : MonoBehaviour
         // VISUAL EFFECT AND SOUND.
         } 
     }
+    // Destroy on contact with walls.
+    private void OnTriggerEnter2D(Collider2D collision)
+    {
+        if (collision.gameObject.CompareTag("Wall")) Destroy(gameObject);
+    }
 }

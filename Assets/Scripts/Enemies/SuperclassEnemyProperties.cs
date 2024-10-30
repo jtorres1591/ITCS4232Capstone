@@ -74,7 +74,7 @@ public class SuperclassEnemyProperties : MonoBehaviour
         if (health >= 1.0f && !aggro && playerTransform != null) DistanceCheck();
         // If enemy is alive and aggro is on, chase.
         if (health >= 1.0f && aggro) currentAction = EnemyAction.Chase;
-        // Select action based on Enum. Make sure this is last in Update.
+        // Select action based on Enum. Make sure this is last in Update, and stays in Update.
         switch (currentAction) { 
             case EnemyAction.Wander:
                 Wander(); break;
@@ -86,8 +86,10 @@ public class SuperclassEnemyProperties : MonoBehaviour
                 break;
         }
     }
-
-
+    // Override this function in child classes. Doing so will change the conditions for behaviors.
+    private void EnemyBehavior() { 
+    
+    }
     // Damage player on collision.
     public void OnCollisionEnter2D(Collision2D collision)
     {
@@ -105,6 +107,7 @@ public class SuperclassEnemyProperties : MonoBehaviour
             // Damage enemy.
             DamageEnemy();
         }
+        
     }
     // Attack Collision
     public void OnTriggerEnter2D(Collider2D other)
@@ -120,7 +123,9 @@ public class SuperclassEnemyProperties : MonoBehaviour
             DamageEnemy();
 
         }
-        
+        // Case for destroying weak walls. Weak Walls have a hitbox as a parent object so that the child object of the wall itself is destroyed with it.
+        if (other.gameObject.CompareTag("WeakWall") && currentAction == EnemyAction.Launched) Destroy(other.gameObject);
+
     }
     // Script to damage an enemy and destroy it if it runs out of health.
     public virtual void DamageEnemy()
