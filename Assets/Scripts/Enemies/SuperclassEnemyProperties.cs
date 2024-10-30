@@ -102,9 +102,23 @@ public class SuperclassEnemyProperties : MonoBehaviour
     private IEnumerator EnemyAttack() {
         attackCooldown = true;
         yield return new WaitForSeconds(attackInterval);
+        if (currentAction != EnemyAction.Launched) BasicAttack();
+    }
+    // Put different types of projectiles after here.
+    // Basic Attack.
+    private void BasicAttack() {
         Instantiate(enemyAttack, transform.position, transform.rotation);
         attackCooldown = false;
     }
+    // Triple Shot.
+
+    // X Shot.
+
+    // + Shot.
+
+    // Bomb.
+
+    // Put different types of projectiles before here.
     // Damage player on collision.
     public void OnCollisionEnter2D(Collision2D collision)
     {

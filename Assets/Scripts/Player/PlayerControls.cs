@@ -106,5 +106,13 @@ public class PlayerControls : MonoBehaviour
         // Deactivating is safer, so it is better than destroying the player object.
         gameObject.SetActive(false);
     }
-    
+    // Taking damage from Enemy Projectiles. Enemy damage is in the enemy superclass so exceptions can be managed, but projectiles should always damage.
+    private void OnTriggerEnter2D(Collider2D collision)
+    {
+        if (collision.gameObject.CompareTag("EnemyAttack")) {
+            DamagePlayer();
+            Destroy(collision.gameObject);
+        }
+    }
+
 }

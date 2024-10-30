@@ -8,6 +8,7 @@ public class PlayerProjectile : MonoBehaviour
     [SerializeField] private float speed = 8.0f;
     private Vector3 destination;
     private Vector3 direction;
+    // Shouldn't make sound on destruction if it is due to being off screen.
     private bool offScreen = false;
     // Start is called before the first frame update
     void Start()
