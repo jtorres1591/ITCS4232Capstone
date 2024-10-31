@@ -6,12 +6,12 @@ public class EnemyBasicProjectile : MonoBehaviour
 {
     // Stats & References.
     public float speed = 5f;
-    private Transform playerTransform;
-    private Vector2 direction;
+    protected Transform playerTransform;
+    protected Vector2 direction;
     // Shouldn't make sound on destruction if it is due to being off screen.
-    private bool offScreen = false;
+    protected bool offScreen = false;
     // Start is called before the first frame update
-    void Start()
+    protected virtual void Start()
     {
         // Find the player object by tag.
         playerTransform = GameObject.FindGameObjectWithTag("Player").transform;
@@ -22,7 +22,7 @@ public class EnemyBasicProjectile : MonoBehaviour
     }
 
     // Update is called once per frame.
-    void Update()
+    protected virtual void Update()
     {
         if (playerTransform != null)
         {
@@ -33,7 +33,7 @@ public class EnemyBasicProjectile : MonoBehaviour
         }
     }
     // Get Direction the projectile will move in.
-    private void GetDirection() {
+    protected virtual void GetDirection() {
         direction = (playerTransform.position - transform.position).normalized;
     }
     // Destroy if off screen.
@@ -43,7 +43,7 @@ public class EnemyBasicProjectile : MonoBehaviour
         Destroy(gameObject);
     }
     // TODO: ON DESTROY, CREATE VISUAL EFFECT AND SOUND IF OFFSCREEN IS FALSE.
-    private void OnDestroy()
+    protected virtual void OnDestroy()
     {
         if (!offScreen)
         {
@@ -51,7 +51,7 @@ public class EnemyBasicProjectile : MonoBehaviour
         }
     }
     // Destroy on contact with walls.
-    private void OnTriggerEnter2D(Collider2D collision)
+    protected void OnTriggerEnter2D(Collider2D collision)
     {
         if (collision.gameObject.CompareTag("Wall")) Destroy(gameObject);
     }

@@ -12,6 +12,8 @@ public class CameraBehavior : MonoBehaviour
     private Vector3 offset;
     // Player Reference.
     private Transform playerTransform;
+    // For Testing Purposes.
+    public bool followPlayer = true;
     // Start is called before the first frame update
     void Start()
     {
@@ -26,8 +28,13 @@ public class CameraBehavior : MonoBehaviour
     }
     // Using LateUpdate
     void LateUpdate() {
+        CameraFollow();
+        
+    }
+    // Camera Following.
+    private void CameraFollow() {
         // This should not run if the player is null.
-        if (playerTransform == null) return;
+        if (playerTransform == null || !followPlayer) return;
         // Calculate the desired position with offsets
         //Vector3 goalPosition = playerTransform.position + new Vector3(offsetH, offsetV, -10) + offset;
         Vector3 goalPosition = new Vector3(playerTransform.position.x, playerTransform.position.y, transform.position.z);
@@ -36,6 +43,5 @@ public class CameraBehavior : MonoBehaviour
 
         // Update camera position
         transform.position = smoothedPosition;
-        
     }
 }

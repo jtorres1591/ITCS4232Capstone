@@ -96,7 +96,7 @@ public class SuperclassEnemyProperties : MonoBehaviour
     private void EnemyBehavior() {
         // TODO: put everything in Update above the switch here, then put this in Update.
         // Attack Intervals. First checks for cooldown, interval, and that the attack is not null.
-        if (!attackCooldown && attackInterval > 0.0f && enemyAttack != null) StartCoroutine(EnemyAttack());
+        if (!attackCooldown && attackInterval > 0.0f && enemyAttack != null && aggro) StartCoroutine(EnemyAttack());
     }
     // Create Projectiles on an interval.
     private IEnumerator EnemyAttack() {

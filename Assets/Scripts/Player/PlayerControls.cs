@@ -20,6 +20,13 @@ public class PlayerControls : MonoBehaviour
     private GameManager gameManager;
     // UI
     public TextMeshProUGUI healthText;
+    // Collider/RB
+    [SerializeField] private Rigidbody2D playerRb;
+    [SerializeField] private BoxCollider2D playerCollider;
+    // References used for Physics Movement.
+    private Vector3 movement;
+    private float horizontalInput = 0.0f;
+    private float verticalInput = 0.0f;
     // Start is called before the first frame update
     void Start()
     {
@@ -33,23 +40,45 @@ public class PlayerControls : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        // Walk
-        PlayerMovement();
+        
         // Shoot on Left Mouse Click.
         if (Input.GetMouseButtonDown(0)) ShootProjectile();
+    }
+    // Player Movement as an action goes in FixedUpdate.
+    private void FixedUpdate()
+    {
+        // Walk
+        PlayerMovement();
+        if (movement.magnitude != 0)
+        {
+            PlayerMovementAction();
+        }
+        else {
+            playerRb.velocity = Vector2.Lerp(playerRb.velocity, Vector2.zero, Time.fixedDeltaTime * 10f);
+        }
     }
     // Walking
     private void PlayerMovement() {
         // Get input from axis.
-        float horizontalInput = Input.GetAxis("Horizontal");
-        float verticalInput = Input.GetAxis("Vertical");
-
+        float newHorizontalInput = Input.GetAxis("Horizontal");
+        float newVerticalInput = Input.GetAxis("Vertical");
+        // If input changes, stop momentum.
+        if(newHorizontalInput != horizontalInput || newVerticalInput != verticalInput) playerRb.velocity = Vector2.zero;
+        // Apply new horizontal input to old.
+        horizontalInput = newHorizontalInput;
+        verticalInput = newVerticalInput;
         //Debug.Log(verticalInput);
 
         // Calculate movement direction.
-        Vector3 movement = new Vector3(horizontalInput, verticalInput, 0f) * walkSpeed * Time.deltaTime;
+        movement = new Vector3(horizontalInput, verticalInput, 0f) * walkSpeed * Time.deltaTime;
         // Apply movement to Player's position.
-        transform.position += movement;
+        //transform.position += movement;
+        
+    }
+    // Walking Action.
+    private void PlayerMovementAction() {
+        // Physics Movement.
+        playerRb.velocity = movement.normalized * walkSpeed;
     }
     // Shoot projectiles when mouse is clicked.
     void ShootProjectile()
