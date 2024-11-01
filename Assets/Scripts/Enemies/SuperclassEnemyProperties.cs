@@ -1,5 +1,6 @@
 using System.Collections;
 using System.Collections.Generic;
+using System.Runtime.CompilerServices;
 using TMPro;
 using Unity.Burst.CompilerServices;
 using UnityEngine;
@@ -32,6 +33,8 @@ public class SuperclassEnemyProperties : MonoBehaviour
     [SerializeField] private float attackInterval = 4.0f;
     [SerializeField] private GameObject enemyAttack;
     private bool attackCooldown = false;
+    // Triple Shot Angle Offset.
+    [SerializeField] protected float tripleShotOffset = 45.0f;
     // Invincibility frame to prevent the same bullet from damaging twice.
     private bool vulnerable = true;
     [SerializeField] private float damageCooldown = 0.1f;
@@ -102,16 +105,29 @@ public class SuperclassEnemyProperties : MonoBehaviour
     private IEnumerator EnemyAttack() {
         attackCooldown = true;
         yield return new WaitForSeconds(attackInterval);
-        if (currentAction != EnemyAction.Launched) BasicAttack();
+        // EDIT HERE TO CHANGE ATTACK TYPE.
+        if (currentAction != EnemyAction.Launched) TripleShot(tripleShotOffset);
     }
     // Put different types of projectiles after here.
     // Basic Attack.
-    private void BasicAttack() {
+    protected void BasicAttack() {
         Instantiate(enemyAttack, transform.position, transform.rotation);
+        // Set attackCooldown to false. This ensures the attack will repeat.
         attackCooldown = false;
     }
     // Triple Shot.
-
+    protected void TripleShot(float offset) {
+        for (int i = 0; i < 3; i++) { 
+            GameObject projectile = Instantiate(enemyAttack, transform.position, transform.rotation);
+            // For projectiles after the first, add an offset.
+            if (i != 0) { 
+                EnemyBasicProjectile currentProjectile = projectile.GetComponent<EnemyBasicProjectile>();
+                if(i == 1) currentProjectile.angleOffset = tripleShotOffset;
+                if (i == 2) currentProjectile.angleOffset = -tripleShotOffset;
+            }
+        }
+        attackCooldown = false;
+    }
     // X Shot.
 
     // + Shot.

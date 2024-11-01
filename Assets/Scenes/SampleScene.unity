@@ -559,6 +559,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   speed: 16
+  angleOffset: -45
 --- !u!1 &1005775417
 GameObject:
   m_ObjectHideFlags: 0
@@ -1029,6 +1030,10 @@ PrefabInstance:
     - target: {fileID: 4926205490222935160, guid: bcaddd3eeeaaa4a4b9c1021beff8a867, type: 3}
       propertyPath: m_Name
       value: Enemy Offset Projectile
+      objectReference: {fileID: 0}
+    - target: {fileID: 4926205490222935160, guid: bcaddd3eeeaaa4a4b9c1021beff8a867, type: 3}
+      propertyPath: m_IsActive
+      value: 0
       objectReference: {fileID: 0}
     m_RemovedComponents:
     - {fileID: 2293297610743635317, guid: bcaddd3eeeaaa4a4b9c1021beff8a867, type: 3}

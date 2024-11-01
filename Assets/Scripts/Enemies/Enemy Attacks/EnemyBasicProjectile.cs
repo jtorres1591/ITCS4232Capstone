@@ -1,5 +1,6 @@
 using System.Collections;
 using System.Collections.Generic;
+using System.Numerics;
 using UnityEngine;
 
 public class EnemyBasicProjectile : MonoBehaviour
@@ -7,7 +8,8 @@ public class EnemyBasicProjectile : MonoBehaviour
     // Stats & References.
     public float speed = 5f;
     protected Transform playerTransform;
-    protected Vector2 direction;
+    protected UnityEngine.Vector2 direction;
+    public float angleOffset = 0.0f;
     // Shouldn't make sound on destruction if it is due to being off screen.
     protected bool offScreen = false;
     // Start is called before the first frame update
@@ -26,15 +28,31 @@ public class EnemyBasicProjectile : MonoBehaviour
     {
         if (playerTransform != null)
         {
-            
+
 
             // Move the projectile towards the player.
-            transform.position += (Vector3)direction * speed * Time.deltaTime;
+            //transform.position += (Vector3)direction * speed * Time.deltaTime;
+            // New Version.
+            transform.position += (UnityEngine.Vector3)direction * speed * Time.deltaTime;
         }
     }
     // Get Direction the projectile will move in.
     protected virtual void GetDirection() {
+        // Old Version.
         direction = (playerTransform.position - transform.position).normalized;
+        // Applying direction change.
+        if (angleOffset != 0) direction = AngleOffset(direction, angleOffset);
+        UnityEngine.Debug.Log(direction);
+        
+    }
+    // Change the direction based on an offset.
+    protected virtual UnityEngine.Vector2 AngleOffset(UnityEngine.Vector2 originalVector, float angleChange) {
+        // Convert the angle to radians.
+        float radianAngle = angleChange * Mathf.Deg2Rad;
+        // 
+        float newX = originalVector.x * Mathf.Cos(angleChange) - originalVector.y * Mathf.Sin(angleChange);
+        float newY = originalVector.x * Mathf.Sin(angleChange) + originalVector.y * Mathf.Cos(angleChange);
+        return new UnityEngine.Vector2 (newX, newY);
     }
     // Destroy if off screen.
     void OnBecameInvisible()
