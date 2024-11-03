@@ -106,7 +106,7 @@ public class SuperclassEnemyProperties : MonoBehaviour
         attackCooldown = true;
         yield return new WaitForSeconds(attackInterval);
         // EDIT HERE TO CHANGE ATTACK TYPE.
-        if (currentAction != EnemyAction.Launched) TripleShot(tripleShotOffset);
+        if (currentAction != EnemyAction.Launched) TripleShot();
     }
     // Put different types of projectiles after here.
     // Basic Attack.
@@ -116,7 +116,7 @@ public class SuperclassEnemyProperties : MonoBehaviour
         attackCooldown = false;
     }
     // Triple Shot.
-    protected void TripleShot(float offset) {
+    protected void TripleShot() {
         for (int i = 0; i < 3; i++) { 
             GameObject projectile = Instantiate(enemyAttack, transform.position, transform.rotation);
             // For projectiles after the first, add an offset.
