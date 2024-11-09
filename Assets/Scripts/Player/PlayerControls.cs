@@ -16,6 +16,9 @@ public class PlayerControls : MonoBehaviour
     private float health;
     public bool overHeal = false;
     private bool alreadyOverHeal = false;
+    // Invincibility Frames.
+    [SerializeField] private float damageCooldown = 0.4f;
+    private bool vulnerable = true;
     // GameManager
     private GameManager gameManager;
     // UI
@@ -89,11 +92,22 @@ public class PlayerControls : MonoBehaviour
     }
     // Take Damage.
     public void DamagePlayer() {
+        // Cancel if not vulnerable.
+        if (!vulnerable) return;
         health--;
+        // Start Damage Cooldown.
+        StartCoroutine(DamageCooldown());
         // Update Health Text.
         UpdateHealthText();
         // Die if health is zero.
         if (health <= 0) PlayerDeath();
+    }
+    // Damage Cooldown/Invincibility Frames.
+    public IEnumerator DamageCooldown()
+    {
+        vulnerable = false;
+        yield return new WaitForSeconds(damageCooldown);
+        vulnerable = true;
     }
     // Heal Player.
     public void HealPlayer(float healHealth) {

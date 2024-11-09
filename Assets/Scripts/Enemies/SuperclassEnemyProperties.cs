@@ -11,6 +11,7 @@ public class SuperclassEnemyProperties : MonoBehaviour
     protected Rigidbody2D enemyRb;
     protected CircleCollider2D enemyCollider;
     protected PlayerControls playerScript;
+    protected GameObject player;
     // General Stats.
     [SerializeField] protected float health = 1.0f;
     [SerializeField] protected float speed = 2.0f;
@@ -25,40 +26,43 @@ public class SuperclassEnemyProperties : MonoBehaviour
     // Wandering Stats.
     [SerializeField] protected float wanderRange = 5.0f;
     [SerializeField] protected float wanderInterval = 4.0f;
-    private float wanderTimer = 0.0f;
-    private Vector2 startPos;
-    private Vector2 wanderPos;
+    protected float wanderTimer = 0.0f;
+    protected Vector2 startPos;
+    protected Vector2 wanderPos;
+    // Strafing Stats.
+    [SerializeField] protected float strafeInterval = 2.5f;
     // Attacking Stats.
     // If attackInterval is zero, attacks will not occur.
-    [SerializeField] private float attackInterval = 4.0f;
-    [SerializeField] private GameObject enemyAttack;
-    private bool attackCooldown = false;
+    [SerializeField] protected float attackInterval = 4.0f;
+    [SerializeField] protected GameObject enemyAttack;
+    [SerializeField] protected GameObject enemyIndependentAttack;
+    protected bool attackCooldown = false;
     // Triple Shot Angle Offset.
     [SerializeField] protected float tripleShotOffset = 45.0f;
     // Invincibility frame to prevent the same bullet from damaging twice.
-    private bool vulnerable = true;
-    [SerializeField] private float damageCooldown = 0.1f;
+    protected bool vulnerable = true;
+    [SerializeField] protected float damageCooldown = 0.1f;
     // Item Drop. Randomize a number from 0 to 63, and if it is below dropRate, the item drops.
-    [SerializeField] private GameObject dropItem;
-    [SerializeField] private float dropRate;
+    [SerializeField] protected GameObject dropItem;
+    [SerializeField] protected float dropRate;
     // Player reference.
-    private Transform playerTransform;
+    protected Transform playerTransform;
     // Physics reference. Finds direction projectile hits from.
     Vector3 projectileDirection;
-    [SerializeField] private PhysicsMaterial2D launchMaterial;
+    [SerializeField] protected PhysicsMaterial2D launchMaterial;
     // Enemy actions.
-    private enum EnemyAction { 
+    protected enum EnemyAction { 
     Wander,
     Chase,
     Strafe,
     Launched
     }
-    private EnemyAction currentAction;
+    protected EnemyAction currentAction;
     // Start is called before the first frame update
-    void Start()
+    protected void Start()
     {
         // Get player transform.
-        GameObject player = GameObject.Find("Player");
+        player = GameObject.Find("Player");
         if (player != null) playerTransform = player.transform;
         // Get the enemy's rigidbody, collider and the player's script to be able to deal damage.
         enemyRb = GetComponent<Rigidbody2D>();
@@ -71,7 +75,7 @@ public class SuperclassEnemyProperties : MonoBehaviour
     }
 
     // Update is called once per frame
-    void Update()
+    protected void Update()
     {
         // Enemy Behavior.
         EnemyBehavior();
@@ -82,7 +86,7 @@ public class SuperclassEnemyProperties : MonoBehaviour
         // If enemy is alive, aggro is off, and player exists, check distance.
         if (health >= 1.0f && !aggro && playerTransform != null) DistanceCheck();
         // If enemy is alive and aggro is on, chase.
-        if (health >= 1.0f && aggro) currentAction = EnemyAction.Chase;
+        if (health >= 1.0f && aggro) currentAction = EnemyAction.Strafe;
         // Select action based on Enum. Make sure this is last in Update, and stays in Update.
         switch (currentAction) { 
             case EnemyAction.Wander:
@@ -90,23 +94,24 @@ public class SuperclassEnemyProperties : MonoBehaviour
             case EnemyAction.Chase:
                 Chase(); break;
             case EnemyAction.Strafe:
-                break;
+                // Use same Wander Script, but a check inside it will direct it to another script to get a position.
+                Wander(); break;
             case EnemyAction.Launched:
                 break;
         }
     }
     // Override this function in child classes. Doing so will change the conditions for behaviors.
-    private void EnemyBehavior() {
+    protected void EnemyBehavior() {
         // TODO: put everything in Update above the switch here, then put this in Update.
         // Attack Intervals. First checks for cooldown, interval, and that the attack is not null.
         if (!attackCooldown && attackInterval > 0.0f && enemyAttack != null && aggro) StartCoroutine(EnemyAttack());
     }
     // Create Projectiles on an interval.
-    private IEnumerator EnemyAttack() {
+    protected IEnumerator EnemyAttack() {
         attackCooldown = true;
         yield return new WaitForSeconds(attackInterval);
         // EDIT HERE TO CHANGE ATTACK TYPE.
-        if (currentAction != EnemyAction.Launched) TripleShot();
+        if (currentAction != EnemyAction.Launched && player.activeSelf) XShot();
     }
     // Put different types of projectiles after here.
     // Basic Attack.
@@ -129,9 +134,34 @@ public class SuperclassEnemyProperties : MonoBehaviour
         attackCooldown = false;
     }
     // X Shot.
-
-    // + Shot.
-
+    protected void XShot()
+    {
+        for (int i = 0; i < 4; i++)
+        {
+            GameObject projectile = Instantiate(enemyIndependentAttack, transform.position, transform.rotation);
+            // Apply Offset.
+            EnemyIndependentProjectile currentProjectile = projectile.GetComponent<EnemyIndependentProjectile>();
+            if (i == 0) currentProjectile.angle = 45;
+            if (i == 1) currentProjectile.angle = 135;
+            if (i == 2) currentProjectile.angle = 225;
+            if (i == 3) currentProjectile.angle = 315;
+        }
+        attackCooldown = false;
+    }
+    // Cross Shot.
+    protected void CrossShot()
+    {
+        for (int i = 0; i < 4; i++)
+        {
+            GameObject projectile = Instantiate(enemyIndependentAttack, transform.position, transform.rotation);
+            // For projectiles after the first, add an offset.
+            EnemyIndependentProjectile currentProjectile = projectile.GetComponent<EnemyIndependentProjectile>();
+            if (i == 1) currentProjectile.angle = 90;
+            if (i == 2) currentProjectile.angle = 180;
+            if (i == 3) currentProjectile.angle = 270;
+        }
+        attackCooldown = false;
+    }
     // Bomb.
 
     // Put different types of projectiles before here.
@@ -153,6 +183,11 @@ public class SuperclassEnemyProperties : MonoBehaviour
             DamageEnemy();
         }
         
+    }
+    // Reset physics on collision Exit if not launched.
+    public void OnCollisionExit2D(Collision2D collision)
+    {
+        if(currentAction != EnemyAction.Launched) enemyRb.velocity = Vector2.zero;
     }
     // Attack Collision
     public void OnTriggerEnter2D(Collider2D other)
@@ -229,26 +264,45 @@ public class SuperclassEnemyProperties : MonoBehaviour
         Destroy(gameObject);
     }
     // Enemy wanders before triggering aggro against player.
-    private void Wander() {
+    protected void Wander() {
         wanderTimer += Time.deltaTime;
 
-        // Move towards the target position
+        // Move towards the target position.
         transform.position = Vector2.MoveTowards(transform.position, wanderPos, speed * Time.deltaTime);
 
-        // If we reached the target position or the time interval has passed, set a new target position
-        if (wanderTimer > wanderInterval)
+        // If the time interval has passed, set a new target position.
+        if ((wanderTimer > wanderInterval && currentAction == EnemyAction.Wander) || (wanderTimer > strafeInterval && currentAction == EnemyAction.Strafe))
         {
-            SetWanderGoal();
+            // Depending on state, either set a goal for wandering or strafing.
+            if (currentAction == EnemyAction.Wander) SetWanderGoal();
+            if (currentAction == EnemyAction.Strafe) StrafeGoal();
+            wanderTimer = 0f; // Reset the timer
+        }
+        // Strafe Version.
+        if (wanderTimer > strafeInterval && currentAction == EnemyAction.Strafe)
+        {
+            // Set a goal for strafing.
+            if (currentAction == EnemyAction.Strafe) StrafeGoal();
             wanderTimer = 0f; // Reset the timer
         }
     }
+    // Strafe around the player.
+    protected void StrafeGoal()
+    {
+        // Generate a random point within the wander range, existing around the player for strafing.
+        Vector2 randomOffset = new Vector2(Random.Range(playerTransform.position.x-wanderRange, playerTransform.position.x+wanderRange), Random.Range(playerTransform.position.y- wanderRange, playerTransform.position.y+wanderRange));
+        wanderPos = (Vector2)startPos + randomOffset;
+
+        // Ensure the target position stays within the range.
+        wanderPos = Vector2.ClampMagnitude(wanderPos - (Vector2)playerTransform.position, wanderRange) + (Vector2)playerTransform.position;
+    }
     // Set target for Wandering.
-    private void SetWanderGoal() {
-        // Generate a random point within the wander range
+    protected void SetWanderGoal() {
+        // Generate a random point within the wander range.
         Vector2 randomOffset = new Vector2(Random.Range(-wanderRange, wanderRange), Random.Range(-wanderRange, wanderRange));
         wanderPos = (Vector2)startPos + randomOffset;
 
-        // Ensure the target position stays within the range
+        // Ensure the target position stays within the range.
         wanderPos = Vector2.ClampMagnitude(wanderPos - (Vector2)startPos, wanderRange) + (Vector2)startPos;
     }
     // Set enemy Aggro.
@@ -256,7 +310,7 @@ public class SuperclassEnemyProperties : MonoBehaviour
     aggro = aggroChange;
     }
     // Call surrounding enemies to get their aggro.
-    private void AggroCall() {
+    protected void AggroCall() {
         // Detect objects within the detection range with the specified tag
         Collider2D[] objectsInRange = Physics2D.OverlapCircleAll(transform.position, callRange);
 
@@ -273,7 +327,7 @@ public class SuperclassEnemyProperties : MonoBehaviour
         }
     }
     // Check distance between player and enemy. Trigger aggro if close.
-    private void DistanceCheck() {
+    protected void DistanceCheck() {
         // Check the distance between the enemy and the player
         float distanceToPlayer = Vector2.Distance(transform.position, playerTransform.position);
         // If the player is within aggro range, set aggro to true.
@@ -283,12 +337,12 @@ public class SuperclassEnemyProperties : MonoBehaviour
         }
     }
     // Chase the player.
-    private void Chase() {
+    protected void Chase() {
         Vector2 direction = (playerTransform.position - transform.position).normalized;
         transform.position = Vector2.MoveTowards(transform.position, playerTransform.position, speed * Time.deltaTime);
     }
     // Chance of dropping item on death.
-    private void ItemDrop() {
+    protected void ItemDrop() {
         // If there is no item to be dropped, do nothing at all.
         if (dropItem != null)
         {

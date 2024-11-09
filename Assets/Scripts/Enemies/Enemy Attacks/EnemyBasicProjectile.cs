@@ -66,7 +66,7 @@ public class EnemyBasicProjectile : MonoBehaviour
         else {
             transform.rotation = UnityEngine.Quaternion.Euler(new UnityEngine.Vector3(0, 0, originalAngle));
         }
-            UnityEngine.Debug.Log(transform.rotation);
+            //UnityEngine.Debug.Log(transform.rotation);
     }
     // If the direction is to be set rather than after the player, this is used instead.
     protected virtual void LockedDirection(float lockedAngle) {
