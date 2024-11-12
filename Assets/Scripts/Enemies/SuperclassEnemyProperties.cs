@@ -50,7 +50,7 @@ public class SuperclassEnemyProperties : MonoBehaviour
     // Physics reference. Finds direction projectile hits from.
     Vector3 projectileDirection;
     [SerializeField] protected PhysicsMaterial2D launchMaterial;
-    // Enemy actions.
+    // Enemy actions. Used to effect behavior.
     protected enum EnemyAction { 
     Wander,
     Chase,
@@ -58,6 +58,22 @@ public class SuperclassEnemyProperties : MonoBehaviour
     Launched
     }
     protected EnemyAction currentAction;
+    // Used to select specific enemy actions, for aggro and projectile choice, respectively.
+    protected enum SelectEnemyAggroAction
+    {
+        Chase,
+        Strafe
+    }
+    [SerializeField] protected SelectEnemyAggroAction selectedEnemyAggroAction;
+    protected enum SelectEnemyProjectile
+    {
+        Basic,
+        Triple,
+        X,
+        Cross,
+        Bomb
+    }
+    [SerializeField] protected SelectEnemyProjectile selectedEnemyProjectile;
     // Start is called before the first frame update
     protected void Start()
     {
@@ -111,7 +127,7 @@ public class SuperclassEnemyProperties : MonoBehaviour
         attackCooldown = true;
         yield return new WaitForSeconds(attackInterval);
         // EDIT HERE TO CHANGE ATTACK TYPE.
-        if (currentAction != EnemyAction.Launched && player.activeSelf) XShot();
+        if (currentAction != EnemyAction.Launched && player.activeSelf) TripleShot();
     }
     // Put different types of projectiles after here.
     // Basic Attack.

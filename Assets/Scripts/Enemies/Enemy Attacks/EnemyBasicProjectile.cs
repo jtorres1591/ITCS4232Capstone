@@ -34,18 +34,7 @@ public class EnemyBasicProjectile : MonoBehaviour
     // Update is called once per frame.
     protected virtual void Update()
     {
-        if (playerTransform != null)
-        {
-
-
-            // Move the projectile towards the player.
-            //transform.position += (Vector3)direction * speed * Time.deltaTime;
-            // New Version.
-            //transform.position += (UnityEngine.Vector3)direction * speed * Time.deltaTime;
-            // Trying this way. Spreads, but only upwards.
-            
-            transform.position += transform.up * speed * Time.deltaTime;
-        }
+        
     }
     // Get Direction the projectile will move in.
     protected virtual void GetDirection() {
@@ -66,7 +55,9 @@ public class EnemyBasicProjectile : MonoBehaviour
         else {
             transform.rotation = UnityEngine.Quaternion.Euler(new UnityEngine.Vector3(0, 0, originalAngle));
         }
-            //UnityEngine.Debug.Log(transform.rotation);
+        // Set Velocity.
+        GetComponent<Rigidbody2D>().velocity = transform.up * speed;
+        //UnityEngine.Debug.Log(transform.rotation);
     }
     // If the direction is to be set rather than after the player, this is used instead.
     protected virtual void LockedDirection(float lockedAngle) {

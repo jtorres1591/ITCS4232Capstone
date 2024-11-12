@@ -13,14 +13,14 @@ public class PlayerProjectile : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
-        // Get mouse position in world coordinates
+        // Get mouse position in world coordinates.
         destination = Camera.main.ScreenToWorldPoint(Input.mousePosition);
         destination.z = 0f;  // Ensure the z-component is 0 (for 2D)
 
-        // Calculate direction to the mouse position
+        // Calculate direction to the mouse position.
         direction = (destination - transform.position).normalized;
 
-        // Apply velocity in the direction towards the mouse
+        // Apply velocity in the direction towards the mouse.
         GetComponent<Rigidbody2D>().velocity = direction * speed;
     }
 

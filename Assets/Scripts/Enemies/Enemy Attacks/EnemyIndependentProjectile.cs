@@ -21,5 +21,7 @@ public class EnemyIndependentProjectile : EnemyBasicProjectile
         {
             transform.rotation = UnityEngine.Quaternion.Euler(new UnityEngine.Vector3(0, 0, angle));
         }
+        // Set Velocity.
+        GetComponent<Rigidbody2D>().velocity = transform.up * speed;
     }
 }

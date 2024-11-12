@@ -113,7 +113,7 @@ MonoBehaviour:
   attackInterval: 4
   enemyAttack: {fileID: 4926205490222935160, guid: bcaddd3eeeaaa4a4b9c1021beff8a867, type: 3}
   enemyIndependentAttack: {fileID: 8560450128552045022, guid: 422f6e96bbfea6b4f950cdbe794146e3, type: 3}
-  tripleShotOffset: 45
+  tripleShotOffset: 35
   damageCooldown: 0.1
   dropItem: {fileID: 5355967356032062373, guid: 61dfe1e1c06c02542968e28e81aa17cf, type: 3}
   dropRate: 32

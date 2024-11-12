@@ -34,9 +34,10 @@ public class EnemySpawner : MonoBehaviour
         float distanceToPlayer = (transform.position - playerTransform.position).sqrMagnitude;
         UnityEngine.Debug.Log(outOfSight);
         // Check if CurrentEnemy has been destroyed.
-        if (currentEnemy == null) { 
+        if (currentEnemy == null && enemyExists) { 
             enemyExists = false;
         }
+        // If enemy does not exist, player is in range, and spawner is off screen, spawn an enemy.
         if (!enemyExists && distanceToPlayer <= spawnRange && outOfSight) { 
             // IDEA: PUT SPAWNENEMY IN A SHORT COROUTINE THAT CREATES A SMOKE EFFECT AROUND ENEMIES AS THEY SPAWN.
             SpawnEnemy();
@@ -46,7 +47,7 @@ public class EnemySpawner : MonoBehaviour
             if ((currentEnemy.transform.position - playerTransform.position).sqrMagnitude >= despawnRange) Destroy(currentEnemy);
         }
     }
-    // Spawn Enemy
+    // Spawn Enemy.
     private void SpawnEnemy() {
         currentEnemy = Instantiate(ChooseEnemy(), transform.position, transform.rotation);
         enemyExists = true;
