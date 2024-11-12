@@ -52,6 +52,7 @@ public class SuperclassEnemyProperties : MonoBehaviour
     [SerializeField] protected PhysicsMaterial2D launchMaterial;
     // Enemy actions. Used to effect behavior.
     protected enum EnemyAction { 
+    Idle,
     Wander,
     Chase,
     Strafe,
@@ -64,9 +65,11 @@ public class SuperclassEnemyProperties : MonoBehaviour
         Chase,
         Strafe
     }
-    [SerializeField] protected SelectEnemyAggroAction selectedEnemyAggroAction;
+    [SerializeField] protected EnemyAction selectedEnemyPeacefulAction;
+    [SerializeField] protected EnemyAction selectedEnemyAggroAction;
     protected enum SelectEnemyProjectile
     {
+        None,
         Basic,
         Triple,
         X,
@@ -87,7 +90,8 @@ public class SuperclassEnemyProperties : MonoBehaviour
         // Initialize Wandering.
         startPos = transform.position;
         SetWanderGoal();
-        currentAction = EnemyAction.Wander;
+        // Start with peaceful action.
+        currentAction = selectedEnemyPeacefulAction;
     }
 
     // Update is called once per frame
@@ -95,16 +99,18 @@ public class SuperclassEnemyProperties : MonoBehaviour
     {
         // Enemy Behavior.
         EnemyBehavior();
-        // Wander so long as enemy either has not had aggro triggered or health has not run out.
-        if (health >= 1.0f && !aggro) currentAction = EnemyAction.Wander;
+        // Perform Peaceful Action. so long as enemy either has not had aggro triggered or health has not run out.
+        if (health >= 1.0f && !aggro) currentAction = selectedEnemyPeacefulAction;
         // If enemy is alive and aggro is active, aggro call.
         if (health >= 1.0f && aggro) AggroCall();
         // If enemy is alive, aggro is off, and player exists, check distance.
         if (health >= 1.0f && !aggro && playerTransform != null) DistanceCheck();
         // If enemy is alive and aggro is on, chase.
-        if (health >= 1.0f && aggro) currentAction = EnemyAction.Strafe;
+        if (health >= 1.0f && aggro) currentAction = selectedEnemyAggroAction;
         // Select action based on Enum. Make sure this is last in Update, and stays in Update.
-        switch (currentAction) { 
+        switch (currentAction) {
+            case EnemyAction.Idle:
+                break;
             case EnemyAction.Wander:
                 Wander(); break;
             case EnemyAction.Chase:
@@ -119,15 +125,32 @@ public class SuperclassEnemyProperties : MonoBehaviour
     // Override this function in child classes. Doing so will change the conditions for behaviors.
     protected void EnemyBehavior() {
         // TODO: put everything in Update above the switch here, then put this in Update.
-        // Attack Intervals. First checks for cooldown, interval, and that the attack is not null.
-        if (!attackCooldown && attackInterval > 0.0f && enemyAttack != null && aggro) StartCoroutine(EnemyAttack());
+        // Attack Intervals. First checks for cooldown, interval, that the enemy should be one that attacks, and that the attack is not null.
+        if (!attackCooldown && attackInterval > 0.0f && enemyAttack != null && aggro && selectedEnemyProjectile != SelectEnemyProjectile.None) StartCoroutine(EnemyAttack());
     }
     // Create Projectiles on an interval.
     protected IEnumerator EnemyAttack() {
         attackCooldown = true;
         yield return new WaitForSeconds(attackInterval);
         // EDIT HERE TO CHANGE ATTACK TYPE.
-        if (currentAction != EnemyAction.Launched && player.activeSelf) TripleShot();
+        if (currentAction != EnemyAction.Launched && player.activeSelf)
+        {
+            // Select attack type based on enum.
+            switch (selectedEnemyProjectile) {
+                case SelectEnemyProjectile.None:
+                    break;
+                case SelectEnemyProjectile.Basic:
+                    BasicAttack(); break;
+                case SelectEnemyProjectile.Triple:
+                    TripleShot(); break;
+                case SelectEnemyProjectile.X:
+                    XShot(); break;
+                case SelectEnemyProjectile.Cross:
+                    CrossShot(); break;
+                case SelectEnemyProjectile.Bomb:
+                    Bomb(); break;
+            }
+        }
     }
     // Put different types of projectiles after here.
     // Basic Attack.
@@ -178,8 +201,10 @@ public class SuperclassEnemyProperties : MonoBehaviour
         }
         attackCooldown = false;
     }
-    // Bomb.
-
+    // Bomb. WILL DO LATER.
+    protected void Bomb() { 
+    
+    }
     // Put different types of projectiles before here.
     // Damage player on collision.
     public void OnCollisionEnter2D(Collision2D collision)
@@ -209,15 +234,17 @@ public class SuperclassEnemyProperties : MonoBehaviour
     public void OnTriggerEnter2D(Collider2D other)
     {
         //UnityEngine.Debug.Log("Trigger Detected");
-        if (other.gameObject.CompareTag("PlayerAttack") && vulnerable && health >= 1.0f)
+        if (other.gameObject.CompareTag("PlayerAttack"))
         {
-            // Remember direction projectile hit from.
-            projectileDirection = -(other.transform.position - transform.position).normalized;
+            if (vulnerable && health >= 1.0f) { 
+                // Remember direction projectile hit from.
+                projectileDirection = -(other.transform.position - transform.position).normalized;
+                
+                // Damage enemy.
+                DamageEnemy();
+            }
             // Destroy the player's bullet that hit.
             Destroy(other.gameObject);
-            // Damage enemy.
-            DamageEnemy();
-
         }
         // Case for destroying weak walls. Weak Walls have a hitbox as a parent object so that the child object of the wall itself is destroyed with it.
         if (other.gameObject.CompareTag("WeakWall") && currentAction == EnemyAction.Launched) Destroy(other.gameObject);

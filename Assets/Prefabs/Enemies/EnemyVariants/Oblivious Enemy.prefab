@@ -14,7 +14,7 @@ GameObject:
   - component: {fileID: 3139455134237727560}
   - component: {fileID: -2193394745142997084}
   m_Layer: 0
-  m_Name: Enemy Superclass
+  m_Name: Oblivious Enemy
   m_TagString: Enemy
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -77,7 +77,7 @@ SpriteRenderer:
   m_SortingLayer: 0
   m_SortingOrder: 0
   m_Sprite: {fileID: -2413806693520163455, guid: ebe73ca9363db456bacf42c025bb4847, type: 3}
-  m_Color: {r: 1, g: 0, b: 0, a: 1}
+  m_Color: {r: 0, g: 0.23211932, b: 1, a: 1}
   m_FlipX: 0
   m_FlipY: 0
   m_DrawMode: 0
@@ -118,8 +118,8 @@ MonoBehaviour:
   dropItem: {fileID: 5355967356032062373, guid: 61dfe1e1c06c02542968e28e81aa17cf, type: 3}
   dropRate: 32
   launchMaterial: {fileID: 6200000, guid: f1627a6952c07394eb0cbe81293b32b5, type: 2}
-  selectedEnemyPeacefulAction: 0
-  selectedEnemyAggroAction: 2
+  selectedEnemyPeacefulAction: 1
+  selectedEnemyAggroAction: 1
   selectedEnemyProjectile: 0
 --- !u!50 &3139455134237727560
 Rigidbody2D:

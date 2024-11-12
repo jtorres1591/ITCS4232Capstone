@@ -32,7 +32,7 @@ public class EnemySpawner : MonoBehaviour
     {
         // Get distance from player to spawner.
         float distanceToPlayer = (transform.position - playerTransform.position).sqrMagnitude;
-        UnityEngine.Debug.Log(outOfSight);
+        //UnityEngine.Debug.Log(outOfSight);
         // Check if CurrentEnemy has been destroyed.
         if (currentEnemy == null && enemyExists) { 
             enemyExists = false;

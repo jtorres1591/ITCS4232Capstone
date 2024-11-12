@@ -14,7 +14,7 @@ GameObject:
   - component: {fileID: 3139455134237727560}
   - component: {fileID: -2193394745142997084}
   m_Layer: 0
-  m_Name: Enemy Superclass
+  m_Name: Chaser
   m_TagString: Enemy
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -118,7 +118,7 @@ MonoBehaviour:
   dropItem: {fileID: 5355967356032062373, guid: 61dfe1e1c06c02542968e28e81aa17cf, type: 3}
   dropRate: 32
   launchMaterial: {fileID: 6200000, guid: f1627a6952c07394eb0cbe81293b32b5, type: 2}
-  selectedEnemyPeacefulAction: 0
+  selectedEnemyPeacefulAction: 1
   selectedEnemyAggroAction: 2
   selectedEnemyProjectile: 0
 --- !u!50 &3139455134237727560
