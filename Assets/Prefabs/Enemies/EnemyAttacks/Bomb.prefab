@@ -14,7 +14,7 @@ GameObject:
   - component: {fileID: 9006474205080352874}
   - component: {fileID: 2293297610743635317}
   m_Layer: 0
-  m_Name: Enemy Projectile
+  m_Name: Bomb
   m_TagString: EnemyAttack
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -78,7 +78,7 @@ SpriteRenderer:
   m_SortingLayer: 0
   m_SortingOrder: 0
   m_Sprite: {fileID: -2413806693520163455, guid: a86470a33a6bf42c4b3595704624658b, type: 3}
-  m_Color: {r: 0.5754717, g: 0, b: 0, a: 1}
+  m_Color: {r: 0.4433962, g: 0.010457456, b: 0.1700506, a: 1}
   m_FlipX: 0
   m_FlipY: 0
   m_DrawMode: 0
@@ -162,9 +162,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: ba62e984faa056b49aa51026dc9861c9, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  speed: 16
+  speed: 12
   angleOffset: 0
-  explosive: 0
+  explosive: 1
   explosion: {fileID: 7915853202010329762, guid: 7721c2e3169cca34ea8cbc265f9a04fc, type: 3}
 --- !u!1001 &5261939062486386167
 PrefabInstance:

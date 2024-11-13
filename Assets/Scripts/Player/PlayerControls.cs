@@ -152,7 +152,7 @@ public class PlayerControls : MonoBehaviour
     // Taking damage from Enemy Projectiles. Enemy damage is in the enemy superclass so exceptions can be managed, but projectiles should always damage.
     private void OnTriggerEnter2D(Collider2D collision)
     {
-        if (collision.gameObject.CompareTag("EnemyAttack")) {
+        if (collision.gameObject.CompareTag("EnemyAttack") || collision.gameObject.CompareTag("Explosion")) {
             DamagePlayer();
             Destroy(collision.gameObject);
         }

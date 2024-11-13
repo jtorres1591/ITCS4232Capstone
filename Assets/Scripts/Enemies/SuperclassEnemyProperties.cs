@@ -36,6 +36,7 @@ public class SuperclassEnemyProperties : MonoBehaviour
     [SerializeField] protected float attackInterval = 4.0f;
     [SerializeField] protected GameObject enemyAttack;
     [SerializeField] protected GameObject enemyIndependentAttack;
+    [SerializeField] protected GameObject enemyBomb;
     protected bool attackCooldown = false;
     // Triple Shot Angle Offset.
     [SerializeField] protected float tripleShotOffset = 45.0f;
@@ -201,9 +202,10 @@ public class SuperclassEnemyProperties : MonoBehaviour
         }
         attackCooldown = false;
     }
-    // Bomb. WILL DO LATER.
-    protected void Bomb() { 
-    
+    // Bomb.
+    protected void Bomb() {
+        GameObject projectile = Instantiate(enemyBomb, transform.position, transform.rotation);
+        attackCooldown = false;
     }
     // Put different types of projectiles before here.
     // Damage player on collision.
@@ -234,7 +236,7 @@ public class SuperclassEnemyProperties : MonoBehaviour
     public void OnTriggerEnter2D(Collider2D other)
     {
         //UnityEngine.Debug.Log("Trigger Detected");
-        if (other.gameObject.CompareTag("PlayerAttack"))
+        if (other.gameObject.CompareTag("PlayerAttack") || (other.gameObject.CompareTag("Explosion")))
         {
             if (vulnerable && health >= 1.0f) { 
                 // Remember direction projectile hit from.

@@ -14,6 +14,12 @@ public class EnemyBasicProjectile : MonoBehaviour
     protected bool aimAtPlayer = true;
     // Shouldn't make sound on destruction if it is due to being off screen.
     protected bool offScreen = false;
+    // Set to true for explosive bullets.
+    public bool explosive = false;
+    [SerializeField] protected GameObject explosion;
+    // StartDelay is a delay before colliding with enemies destroys the projectile.
+    [SerializeField] protected static float startDelay = 0.1f;
+    protected bool enemyContact = false;
     // Start is called before the first frame update
     protected virtual void Start()
     {
@@ -29,6 +35,7 @@ public class EnemyBasicProjectile : MonoBehaviour
         else { 
         
         }
+        StartCoroutine(StartDelay());
     }
 
     // Update is called once per frame.
@@ -82,14 +89,36 @@ public class EnemyBasicProjectile : MonoBehaviour
     // TODO: ON DESTROY, CREATE VISUAL EFFECT AND SOUND IF OFFSCREEN IS FALSE.
     protected virtual void OnDestroy()
     {
+        
+        // Visual Effect spawns and Sounds are louder if on screen.
         if (!offScreen)
         {
+            
             // VISUAL EFFECT AND SOUND.
         }
+        else { 
+            // Sound
+        }
+        
+    }
+    // Slight delay after starting so enemies can destroy the projectile after it is fired and not while it is being fired.
+    protected IEnumerator StartDelay() {
+        yield return new WaitForSeconds(startDelay);
+        enemyContact = true;
     }
     // Destroy on contact with walls.
     protected void OnTriggerEnter2D(Collider2D collision)
     {
-        if (collision.gameObject.CompareTag("Wall")) Destroy(gameObject);
+        if (collision.gameObject.CompareTag("Wall") || collision.gameObject.CompareTag("Player") || collision.gameObject.CompareTag("PlayerAttack"))
+        {
+            // Explode.
+            if (explosive) Instantiate(explosion, transform.position, transform.rotation);
+            Destroy(gameObject);
+        } else if (collision.gameObject.CompareTag("Enemy") && enemyContact) {
+            // Explode.
+            if (explosive) Instantiate(explosion, transform.position, transform.rotation);
+            Destroy(gameObject);
+        }
+        
     }
 }
