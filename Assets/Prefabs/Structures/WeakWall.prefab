@@ -12,7 +12,7 @@ GameObject:
   - component: {fileID: 6616887197784152250}
   - component: {fileID: 4167656834711380066}
   m_Layer: 0
-  m_Name: WeakWall 2
+  m_Name: WeakWall
   m_TagString: WeakWall
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
