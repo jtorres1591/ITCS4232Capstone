@@ -11,6 +11,7 @@ GameObject:
   - component: {fileID: 3694793236584481931}
   - component: {fileID: 6616887197784152250}
   - component: {fileID: 4167656834711380066}
+  - component: {fileID: -4973590954594631706}
   m_Layer: 0
   m_Name: WeakWall
   m_TagString: WeakWall
@@ -74,7 +75,7 @@ SpriteRenderer:
   m_LightmapParameters: {fileID: 0}
   m_SortingLayerID: 0
   m_SortingLayer: 0
-  m_SortingOrder: 0
+  m_SortingOrder: 8
   m_Sprite: {fileID: 7482667652216324306, guid: 311925a002f4447b3a28927169b83ea6, type: 3}
   m_Color: {r: 1, g: 1, b: 1, a: 1}
   m_FlipX: 0
@@ -131,6 +132,18 @@ BoxCollider2D:
   serializedVersion: 2
   m_Size: {x: 1.125, y: 1.125}
   m_EdgeRadius: 0
+--- !u!156049354 &-4973590954594631706
+Grid:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6192439044957225738}
+  m_Enabled: 1
+  m_CellSize: {x: 1, y: 1, z: 1}
+  m_CellGap: {x: 0, y: 0, z: 0}
+  m_CellLayout: 0
+  m_CellSwizzle: 0
 --- !u!1001 &676246248279598593
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -205,3 +218,18 @@ Transform:
   m_CorrespondingSourceObject: {fileID: 1773961688302481212, guid: e00d9f4add5b06a46b4ee606e48ca478, type: 3}
   m_PrefabInstance: {fileID: 676246248279598593}
   m_PrefabAsset: {fileID: 0}
+--- !u!114 &-1231290559476480450
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 12395, guid: 0000000000000000e000000000000000, type: 0}
+  m_Name: Palette Settings
+  m_EditorClassIdentifier: 
+  cellSizing: 0
+  m_TransparencySortMode: 0
+  m_TransparencySortAxis: {x: 0, y: 0, z: 1}
