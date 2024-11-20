@@ -3,11 +3,13 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.SceneManagement;
 using TMPro;
+using UnityEngine.Rendering;
 
 public class TitleManager : MonoBehaviour
 {
     public GameObject mainMenu;
     public GameObject instructions;
+    public GameObject credits;
     // Start is called before the first frame update
     void Start()
     {
@@ -35,6 +37,7 @@ public class TitleManager : MonoBehaviour
     public void Instructions()
     {
         mainMenu.SetActive(false);
+        credits.SetActive(false);
         instructions.SetActive(true);
     }
     // Return to main menu.
@@ -42,5 +45,12 @@ public class TitleManager : MonoBehaviour
     {
         mainMenu.SetActive(true);
         instructions.SetActive(false);
+        credits.SetActive(false);
+    }
+    // Swap to Credits Screen.
+    public void Credits() { 
+        credits.SetActive(true);
+        instructions.SetActive(false);
+        mainMenu.SetActive(false);
     }
 }
