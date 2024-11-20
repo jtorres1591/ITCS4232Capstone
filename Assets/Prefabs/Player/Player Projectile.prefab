@@ -12,7 +12,7 @@ GameObject:
   - component: {fileID: 2748844329879317778}
   - component: {fileID: 4048148266421876636}
   - component: {fileID: 8234704973350210284}
-  - component: {fileID: -5718098478839677487}
+  - component: {fileID: 8422033531951355026}
   m_Layer: 0
   m_Name: Player Projectile
   m_TagString: PlayerAttack
@@ -30,7 +30,7 @@ Transform:
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: -1.5412939, y: 0.8893953, z: 0}
-  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_LocalScale: {x: 4, y: 4, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 0}
@@ -127,7 +127,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   speed: 16
---- !u!58 &-5718098478839677487
+--- !u!58 &8422033531951355026
 CircleCollider2D:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -161,4 +161,4 @@ CircleCollider2D:
   m_UsedByComposite: 0
   m_Offset: {x: 0, y: 0}
   serializedVersion: 2
-  m_Radius: 0.5
+  m_Radius: 0.045
