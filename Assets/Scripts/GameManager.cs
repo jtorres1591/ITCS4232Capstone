@@ -8,10 +8,14 @@ using UnityEngine.SceneManagement;
 public class GameManager : MonoBehaviour
 {
     public GameObject gameOverScreen;
+    public TextMeshProUGUI scoreText;
+    public float score;
     // Start is called before the first frame update
     void Start()
     {
-        
+        // Score should always start at zero.
+        score = 0.0f;
+        scoreText.text = "Score: " + score;
     }
 
     // Update is called once per frame
@@ -28,5 +32,10 @@ public class GameManager : MonoBehaviour
     public void RestartGame()
     {
         SceneManager.LoadScene(SceneManager.GetActiveScene().name);
+    }
+    // Add score when enemies die, will be called from a reference in the enemy superclass.
+    public void AddScore(float addedScore) {
+        score += addedScore;
+        scoreText.text = "Score: " + score;
     }
 }

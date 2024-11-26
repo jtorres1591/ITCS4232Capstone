@@ -12,6 +12,9 @@ public class SuperclassEnemyProperties : MonoBehaviour
     protected CircleCollider2D enemyCollider;
     protected PlayerControls playerScript;
     protected GameObject player;
+    protected GameManager gameManagerScript;
+    // Score given on death.
+    [SerializeField] protected float deathScore = 5.0f;
     // General Stats.
     [SerializeField] protected float health = 1.0f;
     [SerializeField] protected float speed = 2.0f;
@@ -81,6 +84,8 @@ public class SuperclassEnemyProperties : MonoBehaviour
     // Start is called before the first frame update
     protected void Start()
     {
+        // Get GameManager.
+        gameManagerScript = GameObject.Find("GameManager").GetComponent<GameManager>();
         // Get player transform.
         player = GameObject.Find("Player");
         if (player != null) playerTransform = player.transform;
@@ -298,6 +303,8 @@ public class SuperclassEnemyProperties : MonoBehaviour
         //enemyCollider.isTrigger = true;
         // Apply force.
         enemyRb.AddForce(direction * launchSpeed, ForceMode2D.Impulse);
+        // Update Score
+        gameManagerScript.AddScore(deathScore);
         // Trigger countdown for enemy death.
         StartCoroutine(EnemyDeath());
     }
