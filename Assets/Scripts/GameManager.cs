@@ -33,6 +33,10 @@ public class GameManager : MonoBehaviour
     {
         SceneManager.LoadScene(SceneManager.GetActiveScene().name);
     }
+    // Return to Title Screen.
+    public void MainMenu() {
+        SceneManager.LoadScene("TitleScreen");
+    }
     // Add score when enemies die, will be called from a reference in the enemy superclass.
     public void AddScore(float addedScore) {
         score += addedScore;

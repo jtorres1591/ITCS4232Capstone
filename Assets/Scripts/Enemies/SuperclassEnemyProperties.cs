@@ -401,7 +401,7 @@ public class SuperclassEnemyProperties : MonoBehaviour
             float RNG = Random.Range(0, 64);
             if (RNG <= dropRate)
             {
-                Instantiate(dropItem, transform.position, transform.rotation);
+                Instantiate(dropItem, transform.position, Quaternion.Euler(0, 0, 0));
             }
         }
     }
