@@ -25,6 +25,12 @@ public class EnemySpawner : MonoBehaviour
         // Get player transform.
         player = GameObject.Find("Player");
         if (player != null) playerTransform = player.transform;
+        // Setting outOfSight. First, check if on Screen at start.
+        Vector3 screenPos = Camera.main.WorldToViewportPoint(transform.position);
+        // Check if the object is within the camera's viewport.
+        bool onScreen = screenPos.x >= 0f && screenPos.x <= 1f && screenPos.y >= 0f && screenPos.y <= 1f;
+        // Reverse result to apply to outOfSight.
+        outOfSight = !onScreen;
     }
 
     // Update is called once per frame

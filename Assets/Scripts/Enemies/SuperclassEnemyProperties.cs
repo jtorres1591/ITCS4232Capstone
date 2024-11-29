@@ -103,16 +103,18 @@ public class SuperclassEnemyProperties : MonoBehaviour
     // Update is called once per frame
     protected void Update()
     {
+        // If player is gone, action becomes idle.
+        if (player == null) currentAction = EnemyAction.Idle;
         // Enemy Behavior.
         EnemyBehavior();
         // Perform Peaceful Action. so long as enemy either has not had aggro triggered or health has not run out.
-        if (health >= 1.0f && !aggro) currentAction = selectedEnemyPeacefulAction;
+        if (health >= 1.0f && !aggro && player != null) currentAction = selectedEnemyPeacefulAction;
         // If enemy is alive and aggro is active, aggro call.
         if (health >= 1.0f && aggro) AggroCall();
         // If enemy is alive, aggro is off, and player exists, check distance.
         if (health >= 1.0f && !aggro && playerTransform != null) DistanceCheck();
         // If enemy is alive and aggro is on, chase.
-        if (health >= 1.0f && aggro) currentAction = selectedEnemyAggroAction;
+        if (health >= 1.0f && aggro && player != null) currentAction = selectedEnemyAggroAction;
         // Select action based on Enum. Make sure this is last in Update, and stays in Update.
         switch (currentAction) {
             case EnemyAction.Idle:
