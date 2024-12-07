@@ -99,6 +99,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 818ddd3dbf701b94184d4e7da6f803e4, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  deathScore: 5
   health: 3
   speed: 2
   aggro: 0
@@ -122,6 +123,7 @@ MonoBehaviour:
   selectedEnemyPeacefulAction: 1
   selectedEnemyAggroAction: 3
   selectedEnemyProjectile: 1
+  soundWallBreak: {fileID: 6053611783633549002, guid: 1fdf9ff4d0d2cd44ba59b167d46458ec, type: 3}
 --- !u!50 &3139455134237727560
 Rigidbody2D:
   serializedVersion: 4

@@ -81,6 +81,8 @@ public class SuperclassEnemyProperties : MonoBehaviour
         Bomb
     }
     [SerializeField] protected SelectEnemyProjectile selectedEnemyProjectile;
+    // Sound Object variables.
+    [SerializeField] protected GameObject soundWallBreak;
     // Start is called before the first frame update
     protected void Start()
     {
@@ -256,7 +258,11 @@ public class SuperclassEnemyProperties : MonoBehaviour
             Destroy(other.gameObject);
         }
         // Case for destroying weak walls. Weak Walls have a hitbox as a parent object so that the child object of the wall itself is destroyed with it.
-        if (other.gameObject.CompareTag("WeakWall") && currentAction == EnemyAction.Launched) Destroy(other.gameObject);
+        if (other.gameObject.CompareTag("WeakWall") && currentAction == EnemyAction.Launched)
+        {
+            Destroy(other.gameObject);
+            Instantiate(soundWallBreak, transform.position, Quaternion.Euler(0, 0, 0));
+        }
 
     }
     // Script to damage an enemy and destroy it if it runs out of health.

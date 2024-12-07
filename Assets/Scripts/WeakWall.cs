@@ -5,9 +5,11 @@ using UnityEngine;
 public class WeakWall : MonoBehaviour
 {
     private bool despawnEnemy = true;
+    
     // Start is called before the first frame update
     void Start()
     {
+        
         StartCoroutine(SetDespawnEnemy());
     }
 
@@ -24,5 +26,6 @@ public class WeakWall : MonoBehaviour
     private IEnumerator SetDespawnEnemy(){
         yield return new WaitForSeconds(0.1f);
         despawnEnemy = false;
-    } 
+    }
+    
 }
