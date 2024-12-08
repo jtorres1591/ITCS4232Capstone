@@ -100,6 +100,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   lifeSpan: 0.3
+  soundExplosion: {fileID: 6053611783633549002, guid: ba83c01443592634db9490b4783d23cd, type: 3}
+  soundWallBreak: {fileID: 6053611783633549002, guid: 1fdf9ff4d0d2cd44ba59b167d46458ec, type: 3}
 --- !u!58 &2148358171913684378
 CircleCollider2D:
   m_ObjectHideFlags: 0

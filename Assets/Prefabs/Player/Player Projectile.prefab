@@ -127,6 +127,10 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   speed: 16
+  soundFire: {fileID: 6053611783633549002, guid: 071bcfb6f7263aa44b58cf1755aaa59f, type: 3}
+  soundHit1: {fileID: 6053611783633549002, guid: f4b1ad10ef3f19443952c3607b1db701, type: 3}
+  soundHit2: {fileID: 6053611783633549002, guid: ea6edbd26a8c25d4cadcec107a408b27, type: 3}
+  soundMiss: {fileID: 6053611783633549002, guid: a45adf638aaf497409570557c3a5b337, type: 3}
 --- !u!58 &8422033531951355026
 CircleCollider2D:
   m_ObjectHideFlags: 0

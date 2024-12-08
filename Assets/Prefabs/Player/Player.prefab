@@ -180,3 +180,5 @@ MonoBehaviour:
   healthText: {fileID: 0}
   playerRb: {fileID: 0}
   playerCollider: {fileID: 0}
+  soundPlayerDamage: {fileID: 6053611783633549002, guid: 39c0b56f95ce5ea49b9070faa11bb5d0, type: 3}
+  soundPlayerDeath: {fileID: 6053611783633549002, guid: 1a3d8645455296543825ae9102f3bf49, type: 3}

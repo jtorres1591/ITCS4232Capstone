@@ -20,6 +20,9 @@ public class EnemyBasicProjectile : MonoBehaviour
     // StartDelay is a delay before colliding with enemies destroys the projectile.
     [SerializeField] protected static float startDelay = 0.1f;
     protected bool enemyContact = false;
+    // Sound
+    [SerializeField] protected GameObject soundFire;
+    [SerializeField] protected GameObject soundDestroy;
     // Start is called before the first frame update
     protected virtual void Start()
     {
@@ -27,6 +30,8 @@ public class EnemyBasicProjectile : MonoBehaviour
         playerTransform = GameObject.FindGameObjectWithTag("Player").transform;
         // Destroy if null.
         if(playerTransform == null) Destroy(gameObject);
+        // Fire Sound.
+        Instantiate(soundFire, transform.position, UnityEngine.Quaternion.Euler(0, 0, 0));
         if (aimAtPlayer)
         {
             // Calculate the direction to the player.
@@ -113,10 +118,12 @@ public class EnemyBasicProjectile : MonoBehaviour
         {
             // Explode.
             if (explosive) Instantiate(explosion, transform.position, transform.rotation);
+            if (!explosive) Instantiate(soundDestroy, transform.position, UnityEngine.Quaternion.Euler(0, 0, 0));
             Destroy(gameObject);
         } else if (collision.gameObject.CompareTag("Enemy") && enemyContact) {
             // Explode.
             if (explosive) Instantiate(explosion, transform.position, transform.rotation);
+            if (!explosive) Instantiate(soundDestroy, transform.position, UnityEngine.Quaternion.Euler(0, 0, 0));
             Destroy(gameObject);
         }
         

@@ -10,6 +10,11 @@ public class PlayerProjectile : MonoBehaviour
     private Vector3 direction;
     // Shouldn't make sound on destruction if it is due to being off screen.
     private bool offScreen = false;
+    // Sounds
+    [SerializeField] private GameObject soundFire;
+    [SerializeField] private GameObject soundHit1;
+    [SerializeField] private GameObject soundHit2;
+    [SerializeField] private GameObject soundMiss;
     // Start is called before the first frame update
     void Start()
     {
@@ -22,6 +27,8 @@ public class PlayerProjectile : MonoBehaviour
 
         // Apply velocity in the direction towards the mouse.
         GetComponent<Rigidbody2D>().velocity = direction * speed;
+        // Fire Sound.
+        Instantiate(soundFire, transform.position, Quaternion.Euler(0, 0, 0));
     }
 
     // Update is called once per frame
@@ -44,6 +51,15 @@ public class PlayerProjectile : MonoBehaviour
     // Destroy on contact with walls.
     private void OnTriggerEnter2D(Collider2D collision)
     {
-        if (collision.gameObject.CompareTag("Wall")) Destroy(gameObject);
+        if (collision.gameObject.CompareTag("Wall"))
+        {
+            Instantiate(soundMiss, transform.position, Quaternion.Euler(0, 0, 0));
+            Destroy(gameObject);
+        }
+        if (collision.gameObject.CompareTag("Enemy")) {
+            int soundChoice = Random.Range(0, 2);
+            if (soundChoice == 0) Instantiate(soundHit1, transform.position, Quaternion.Euler(0, 0, 0));
+            if (soundChoice == 1) Instantiate(soundHit2, transform.position, Quaternion.Euler(0, 0, 0));
+        }
     }
 }

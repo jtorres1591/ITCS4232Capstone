@@ -30,6 +30,9 @@ public class PlayerControls : MonoBehaviour
     private Vector3 movement;
     private float horizontalInput = 0.0f;
     private float verticalInput = 0.0f;
+    // Sound Objects.
+    [SerializeField] private GameObject soundPlayerDamage;
+    [SerializeField] private GameObject soundPlayerDeath;
     // Start is called before the first frame update
     void Start()
     {
@@ -100,7 +103,14 @@ public class PlayerControls : MonoBehaviour
         // Update Health Text.
         UpdateHealthText();
         // Die if health is zero.
-        if (health <= 0) PlayerDeath();
+        if (health <= 0)
+        {
+            Instantiate(soundPlayerDeath, transform.position, Quaternion.Euler(0, 0, 0));
+            PlayerDeath();
+        }
+        else {
+            Instantiate(soundPlayerDamage, transform.position, Quaternion.Euler(0, 0, 0));
+        }
     }
     // Damage Cooldown/Invincibility Frames.
     public IEnumerator DamageCooldown()

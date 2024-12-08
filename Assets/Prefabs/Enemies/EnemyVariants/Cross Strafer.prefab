@@ -124,6 +124,10 @@ MonoBehaviour:
   selectedEnemyAggroAction: 3
   selectedEnemyProjectile: 4
   soundWallBreak: {fileID: 6053611783633549002, guid: 1fdf9ff4d0d2cd44ba59b167d46458ec, type: 3}
+  soundEnemyDeath: {fileID: 6053611783633549002, guid: dd3d7900133e8b34ca621ca849dff286, type: 3}
+  soundEnemyLaunch: {fileID: 6053611783633549002, guid: 46709538d6646aa43b22a216b82961ea, type: 3}
+  soundEnemyRiccochet: {fileID: 6053611783633549002, guid: 611dc7d3f06852d47a399ac79c6921aa, type: 3}
+  soundWallBounce: {fileID: 6053611783633549002, guid: 650102beb164bf347a6ff6bfa5966108, type: 3}
 --- !u!50 &3139455134237727560
 Rigidbody2D:
   serializedVersion: 4

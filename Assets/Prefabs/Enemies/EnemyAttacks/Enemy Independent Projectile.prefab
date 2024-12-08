@@ -131,6 +131,8 @@ MonoBehaviour:
   angleOffset: 0
   explosive: 0
   explosion: {fileID: 7915853202010329762, guid: 7721c2e3169cca34ea8cbc265f9a04fc, type: 3}
+  soundFire: {fileID: 6053611783633549002, guid: 071bcfb6f7263aa44b58cf1755aaa59f, type: 3}
+  soundDestroy: {fileID: 6053611783633549002, guid: a45adf638aaf497409570557c3a5b337, type: 3}
   angle: 0
 --- !u!58 &-2532969461274922253
 CircleCollider2D:

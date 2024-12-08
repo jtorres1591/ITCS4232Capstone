@@ -83,6 +83,10 @@ public class SuperclassEnemyProperties : MonoBehaviour
     [SerializeField] protected SelectEnemyProjectile selectedEnemyProjectile;
     // Sound Object variables.
     [SerializeField] protected GameObject soundWallBreak;
+    [SerializeField] protected GameObject soundEnemyDeath;
+    [SerializeField] protected GameObject soundEnemyLaunch;
+    [SerializeField] protected GameObject soundEnemyRiccochet;
+    [SerializeField] protected GameObject soundWallBounce;
     // Start is called before the first frame update
     protected void Start()
     {
@@ -94,7 +98,8 @@ public class SuperclassEnemyProperties : MonoBehaviour
         // Get the enemy's rigidbody, collider and the player's script to be able to deal damage.
         enemyRb = GetComponent<Rigidbody2D>();
         enemyCollider = GetComponent<CircleCollider2D>();
-        playerScript = GameObject.Find("Player").GetComponent<PlayerControls>();
+        GameObject playerReference = GameObject.FindGameObjectWithTag("Player");
+        if(playerReference != null) playerScript = playerReference.GetComponent<PlayerControls>();
         // Initialize Wandering.
         startPos = transform.position;
         SetWanderGoal();
@@ -234,7 +239,15 @@ public class SuperclassEnemyProperties : MonoBehaviour
             // Damage enemy.
             DamageEnemy();
         }
-        
+        // Sounds for bouncing off of Walls and Enemies.
+        if (collision.gameObject.CompareTag("Wall") && currentAction == EnemyAction.Launched) {
+            Instantiate(soundWallBounce, transform.position, Quaternion.Euler(0, 0, 0));
+        }
+        if (collision.gameObject.CompareTag("Enemy") && currentAction == EnemyAction.Launched)
+        {
+            Instantiate(soundEnemyRiccochet, transform.position, Quaternion.Euler(0, 0, 0));
+        }
+
     }
     // Reset physics on collision Exit if not launched.
     public void OnCollisionExit2D(Collision2D collision)
@@ -282,7 +295,7 @@ public class SuperclassEnemyProperties : MonoBehaviour
         else {
             // TEST: DOES TEMPORARILY STOPPING MOVEMENT STOP THE PERMANENT WRONG MOVEMENT AFTER DAMAGE. IT SEEMS SO, BUT CHECK BACK ON THIS LATER.
             enemyRb.velocity = Vector2.zero;
-            // TODO: ADD SOUND EFFECT.
+            
         }
        
     }
@@ -311,8 +324,10 @@ public class SuperclassEnemyProperties : MonoBehaviour
         //enemyCollider.isTrigger = true;
         // Apply force.
         enemyRb.AddForce(direction * launchSpeed, ForceMode2D.Impulse);
-        // Update Score
+        // Update Score.
         gameManagerScript.AddScore(deathScore);
+        // Sound.
+        Instantiate(soundEnemyLaunch, transform.position, Quaternion.Euler(0, 0, 0));
         // Trigger countdown for enemy death.
         StartCoroutine(EnemyDeath());
     }
@@ -321,6 +336,7 @@ public class SuperclassEnemyProperties : MonoBehaviour
     {
         yield return new WaitForSeconds(launchTime);
         // TODO: ADD SOUND AND VISUAL EFFECTS
+        Instantiate(soundEnemyDeath, transform.position, Quaternion.Euler(0, 0, 0));
         Destroy(gameObject);
     }
     // Enemy wanders before triggering aggro against player.

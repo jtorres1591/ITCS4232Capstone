@@ -100,6 +100,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   healHealth: 3
+  soundCollect: {fileID: 6053611783633549002, guid: 7e146bc7b04fc6c4fb9cc25016c7147d, type: 3}
 --- !u!58 &187928357176044091
 CircleCollider2D:
   m_ObjectHideFlags: 0

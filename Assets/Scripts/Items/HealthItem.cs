@@ -9,6 +9,7 @@ public class HealthItem : MonoBehaviour
     // References.
     protected PlayerControls playerScript;
     protected CircleCollider2D itemCollider;
+    [SerializeField] protected GameObject soundCollect;
     // Start is called before the first frame update
     void Start()
     {
@@ -27,6 +28,7 @@ public class HealthItem : MonoBehaviour
     public void OnTriggerEnter2D(Collider2D other) {
         if (other.gameObject.CompareTag("Player"))
         {
+            Instantiate(soundCollect, transform.position, UnityEngine.Quaternion.Euler(0, 0, 0));
             playerScript.HealPlayer(healHealth);
             Destroy(gameObject);
         }

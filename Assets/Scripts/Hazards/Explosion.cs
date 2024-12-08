@@ -5,10 +5,13 @@ using UnityEngine;
 public class Explosion : MonoBehaviour
 {
     [SerializeField] private float lifeSpan = 0.3f;
+    [SerializeField] private GameObject soundExplosion;
+    [SerializeField] private GameObject soundWallBreak;
     // Start is called before the first frame update
     void Start()
     {
         Destroy(gameObject, lifeSpan);
+        Instantiate(soundExplosion, transform.position, Quaternion.Euler(0, 0, 0));
     }
 
     // Update is called once per frame
@@ -18,6 +21,10 @@ public class Explosion : MonoBehaviour
     }
     public void OnTriggerEnter2D(Collider2D collision)
     {
-        if (collision.CompareTag("WeakWall")) Destroy(collision.gameObject);
+        if (collision.CompareTag("WeakWall"))
+        {
+            Instantiate(soundWallBreak, transform.position, Quaternion.Euler(0, 0, 0));
+            Destroy(collision.gameObject);
+        }
     }
 }
