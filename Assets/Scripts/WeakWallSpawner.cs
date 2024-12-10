@@ -32,7 +32,7 @@ public class WeakWallSpawner : MonoBehaviour
     void Update()
     {
         if (weakWall == null) wallExists = false;
-        if (!wallExists && !respawnTimerActive) StartCoroutine(RespawnTimer());
+        if (!wallExists && !respawnTimerActive && !respawnTimerComplete) StartCoroutine(RespawnTimer());
         if (respawnTimerComplete && player != null)
         {
             if(OutOfRange()) SpawnWall();

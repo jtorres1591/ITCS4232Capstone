@@ -8,8 +8,10 @@ using TMPro.Examples;
 
 public class PlayerControls : MonoBehaviour
 {
-    // GameObjects
+    // Projectile
     [SerializeField] private GameObject playerProjectile;
+    [SerializeField] private float shootCooldown = 0.15f;
+    private bool canFire = true;
     // Player Stats
     [SerializeField] private float walkSpeed = 1.0f;
     [SerializeField] private float maxHealth = 3.0f;
@@ -67,7 +69,7 @@ public class PlayerControls : MonoBehaviour
     }
     // Walk Cycle animation is always active.
     private IEnumerator WalkCycleActive() {
-        yield return new WaitForSeconds(0.2f);
+        yield return new WaitForSeconds(0.1f);
         if (walkCycle < 5)
         {
             walkCycle += 1;
@@ -83,7 +85,7 @@ public class PlayerControls : MonoBehaviour
     {
         
         // Shoot on Left Mouse Click.
-        if (Input.GetMouseButtonDown(0)) ShootProjectile();
+        if (Input.GetMouseButtonDown(0) && canFire) ShootProjectile();
     }
     // Player Movement as an action goes in FixedUpdate.
     private void FixedUpdate()
@@ -97,6 +99,11 @@ public class PlayerControls : MonoBehaviour
         else {
             playerRb.velocity = Vector2.Lerp(playerRb.velocity, Vector2.zero, Time.fixedDeltaTime * 10f);
         }
+    }
+    private IEnumerator ProjectileCooldown() {
+        canFire = false;
+        yield return new WaitForSeconds(shootCooldown);
+        canFire = true;
     }
     // Walking
     private void PlayerMovement() {
@@ -213,6 +220,7 @@ public class PlayerControls : MonoBehaviour
         //Debug.Log("Click");
         // Instantiating not only needs object, but both position and rotation. Remember that.
         Instantiate(playerProjectile, transform.position, transform.rotation);
+        StartCoroutine(ProjectileCooldown());
     }
     // Take Damage.
     public void DamagePlayer() {
