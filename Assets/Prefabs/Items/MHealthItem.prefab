@@ -100,7 +100,9 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   healHealth: 2
+  lifeSpan: 20
   soundCollect: {fileID: 6053611783633549002, guid: 7e146bc7b04fc6c4fb9cc25016c7147d, type: 3}
+  collectVFX: {fileID: 92797906381522563, guid: 3e88bd1238a7aaf41a992fb41d91d3e8, type: 3}
 --- !u!58 &-7204301720578304015
 CircleCollider2D:
   m_ObjectHideFlags: 0

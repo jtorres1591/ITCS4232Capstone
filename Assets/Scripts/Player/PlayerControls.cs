@@ -4,6 +4,7 @@ using UnityEditor.Rendering;
 using UnityEngine;
 using TMPro;
 using JetBrains.Annotations;
+using TMPro.Examples;
 
 public class PlayerControls : MonoBehaviour
 {
@@ -25,7 +26,8 @@ public class PlayerControls : MonoBehaviour
     public TextMeshProUGUI healthText;
     // Collider/RB
     [SerializeField] private Rigidbody2D playerRb;
-    [SerializeField] private BoxCollider2D playerCollider;
+    // Circle Collider prevents the player from snagging on walls. Also allows the player to squeeze through 1x1 gaps.
+    [SerializeField] private CircleCollider2D playerCollider;
     // References used for Physics Movement.
     private Vector3 movement;
     private float horizontalInput = 0.0f;
@@ -33,6 +35,25 @@ public class PlayerControls : MonoBehaviour
     // Sound Objects.
     [SerializeField] private GameObject soundPlayerDamage;
     [SerializeField] private GameObject soundPlayerDeath;
+    // ANIMATION.
+    [SerializeField] private GameObject spriteGameObject;
+    [SerializeField] private SpriteRenderer spriteRenderer;
+    // Flags; Positive Horizontal is Right
+    private bool positiveHor = true;
+    private bool facingRight = true;
+    // Float used for idle directions.
+    private float currentDirection = 0;
+    // Float used for walk cycle. Ranges from zero to five.
+    private float walkCycle = 0;
+    // Sprites.
+    [SerializeField] private Sprite idleSpriteUp;
+    [SerializeField] private Sprite idleSpriteDown;
+    [SerializeField] private Sprite idleSpriteSide;
+    [SerializeField] private Sprite[] walkSpriteUp;
+    [SerializeField] private Sprite[] walkSpriteDown;
+    [SerializeField] private Sprite[] walkSpriteSide;
+    // VFX
+    [SerializeField] private GameObject deathVFX;
     // Start is called before the first frame update
     void Start()
     {
@@ -41,8 +62,22 @@ public class PlayerControls : MonoBehaviour
         healthText.text = "Health: " + health;
         // GameManager.
         gameManager = GameObject.Find("GameManager").GetComponent<GameManager>();
+        // Start WalkCycle to loop so long as it is active.
+        StartCoroutine(WalkCycleActive());
     }
-
+    // Walk Cycle animation is always active.
+    private IEnumerator WalkCycleActive() {
+        yield return new WaitForSeconds(0.2f);
+        if (walkCycle < 5)
+        {
+            walkCycle += 1;
+        }
+        else {
+            walkCycle = 0;
+        }
+        //Debug.Log(walkCycle);
+        StartCoroutine(WalkCycleActive());
+    }
     // Update is called once per frame
     void Update()
     {
@@ -79,8 +114,94 @@ public class PlayerControls : MonoBehaviour
         movement = new Vector3(horizontalInput, verticalInput, 0f) * walkSpeed * Time.deltaTime;
         // Apply movement to Player's position.
         //transform.position += movement;
-        
+        // ANIMATION. CAPS FOR EMPHASIS.
+        // IF HORIZONTAL AND VERTICAL ARE BOTH ZERO, IDLE.
+        if (horizontalInput == 0 && verticalInput == 0)
+        {
+            GetIdleSprite(currentDirection);
+        }
+        // DECIDE BETWEEN HORIZONTAL AND VERTICAL DEPENDING ON THE GREATER ABSOLUTE VALUE.
+        else if (Mathf.Abs(verticalInput) > Mathf.Abs(horizontalInput))
+        {
+            // IF VERTICAL IS POSITIVE, FACE UP.
+            if (verticalInput > 0)
+            {
+                //Debug.Log("Up");
+                currentDirection = 0;
+                GetWalkSprite(currentDirection);
+            }
+            // IF VERTICAL IS NEGATIVE, FACE DOWN.
+            else {
+                //Debug.Log("Down");
+                currentDirection = 1;
+                GetWalkSprite(currentDirection);
+            }
+        }
+        else
+        {
+            currentDirection = 2;
+            GetWalkSprite(currentDirection);
+            // IF HORIZONTAL IS NEGATIVE, FACE LEFT.
+            if (horizontalInput < 0)
+            {
+                //Debug.Log("Left");
+                positiveHor = false;
+            }
+            // IF HORIZONTAL IS POSITIVE, FACE RIGHT.
+            else {
+                //Debug.Log("Right");
+                positiveHor = true;
+            }
+            if (positiveHor != facingRight) FlipSprite();
+        }
     }
+    // ANIMATION. FLIP SPRITE WHEN HORIZONTAL.
+    private void FlipSprite() {
+        Vector3 scale = spriteGameObject.transform.localScale;
+        
+        // Flip sprite by changing the x value of the local scale.
+        scale.x = -scale.x;
+
+        // Apply the new scale.
+        spriteGameObject.transform.localScale = scale;
+        if (facingRight)
+        {
+            facingRight = false;
+        }
+        else {
+            facingRight = true;
+        }
+    }
+    private void GetIdleSprite(float choice) {
+        switch (choice) {
+            case 0:
+                spriteRenderer.sprite = idleSpriteUp;
+                break;
+            case 1:
+                spriteRenderer.sprite = idleSpriteDown;
+                break;
+            case 2:
+                spriteRenderer.sprite = idleSpriteSide;
+                break;
+        }
+    }
+    private void GetWalkSprite(float choice)
+    {
+        switch (choice)
+        {
+            case 0:
+                spriteRenderer.sprite = walkSpriteUp[Mathf.FloorToInt(walkCycle)];
+                break;
+            case 1:
+                spriteRenderer.sprite = walkSpriteDown[Mathf.FloorToInt(walkCycle)];
+                break;
+            case 2:
+                spriteRenderer.sprite = walkSpriteSide[Mathf.FloorToInt(walkCycle)];
+                break;
+        }
+    }
+    // ANIMATION. DECIDE FRAME OF ANIMATION.
+
     // Walking Action.
     private void PlayerMovementAction() {
         // Physics Movement.
@@ -154,6 +275,7 @@ public class PlayerControls : MonoBehaviour
     }
     // Player Death. Can be called manually if instant-death is implemented.
     public void PlayerDeath() {
+        Instantiate(deathVFX, transform.position, UnityEngine.Quaternion.Euler(0, 0, 0));
         // Game Over
         gameManager.GameOver();
         // Deactivating is safer, so it is better than destroying the player object.

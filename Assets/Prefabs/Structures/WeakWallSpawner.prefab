@@ -46,3 +46,5 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   respawnTimer: 30
   weakWallPrefab: {fileID: 6192439044957225738, guid: 9fbdae17904a46a45a33a03c9db2c68f, type: 3}
+  spawnRange: 200
+  breakVFX: {fileID: 8068905985226481585, guid: c5409a459cace0649b83a06974197a4f, type: 3}

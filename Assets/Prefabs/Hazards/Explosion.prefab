@@ -42,7 +42,7 @@ SpriteRenderer:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 7915853202010329762}
-  m_Enabled: 1
+  m_Enabled: 0
   m_CastShadows: 0
   m_ReceiveShadows: 0
   m_DynamicOccludee: 1
@@ -102,6 +102,7 @@ MonoBehaviour:
   lifeSpan: 0.3
   soundExplosion: {fileID: 6053611783633549002, guid: ba83c01443592634db9490b4783d23cd, type: 3}
   soundWallBreak: {fileID: 6053611783633549002, guid: 1fdf9ff4d0d2cd44ba59b167d46458ec, type: 3}
+  visualEffect: {fileID: 6173933822217152328, guid: 16586feb0dff7764887c2e17786016bc, type: 3}
 --- !u!58 &2148358171913684378
 CircleCollider2D:
   m_ObjectHideFlags: 0

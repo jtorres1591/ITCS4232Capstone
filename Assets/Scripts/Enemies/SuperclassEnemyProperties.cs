@@ -13,8 +13,9 @@ public class SuperclassEnemyProperties : MonoBehaviour
     protected PlayerControls playerScript;
     protected GameObject player;
     protected GameManager gameManagerScript;
-    // Score given on death.
+    // Score given on death and breaking walls.
     [SerializeField] protected float deathScore = 5.0f;
+    [SerializeField] protected float wallScore = 1.0f;
     // General Stats.
     [SerializeField] protected float health = 1.0f;
     [SerializeField] protected float speed = 2.0f;
@@ -87,6 +88,15 @@ public class SuperclassEnemyProperties : MonoBehaviour
     [SerializeField] protected GameObject soundEnemyLaunch;
     [SerializeField] protected GameObject soundEnemyRiccochet;
     [SerializeField] protected GameObject soundWallBounce;
+    // VFX
+    [SerializeField] protected GameObject deathVFX;
+    // ANIMATION
+    [SerializeField] protected GameObject spriteGameObject;
+    [SerializeField] protected SpriteRenderer spriteRenderer;
+    // Sprites.
+    [SerializeField] protected Sprite[] enemySprite;
+    // 
+    protected float animationCounter = 0;
     // Start is called before the first frame update
     protected void Start()
     {
@@ -105,8 +115,25 @@ public class SuperclassEnemyProperties : MonoBehaviour
         SetWanderGoal();
         // Start with peaceful action.
         currentAction = selectedEnemyPeacefulAction;
+        // Animate at all times.
+        StartCoroutine(AnimationCycle());
     }
-
+    //  Animation cycle is always active unless launched.
+    private IEnumerator AnimationCycle()
+    {
+        spriteRenderer.sprite = enemySprite[Mathf.FloorToInt(animationCounter)];
+        yield return new WaitForSeconds(0.2f);
+        if (animationCounter < enemySprite.Length-1)
+        {
+            animationCounter += 1;
+        }
+        else
+        {
+            animationCounter = 0;
+        }
+        
+        if(currentAction != EnemyAction.Launched) StartCoroutine(AnimationCycle());
+    }
     // Update is called once per frame
     protected void Update()
     {
@@ -246,6 +273,9 @@ public class SuperclassEnemyProperties : MonoBehaviour
         if (collision.gameObject.CompareTag("Enemy") && currentAction == EnemyAction.Launched)
         {
             Instantiate(soundEnemyRiccochet, transform.position, Quaternion.Euler(0, 0, 0));
+            Instantiate(deathVFX, transform.position, Quaternion.Euler(0, 0, 0));
+            // Bonus score for hitting other enemies.
+            gameManagerScript.AddScore(deathScore);
         }
 
     }
@@ -275,6 +305,8 @@ public class SuperclassEnemyProperties : MonoBehaviour
         {
             Destroy(other.gameObject);
             Instantiate(soundWallBreak, transform.position, Quaternion.Euler(0, 0, 0));
+            // Small Bonus Score for breaking walls.
+            gameManagerScript.AddScore(wallScore);
         }
 
     }
@@ -337,6 +369,7 @@ public class SuperclassEnemyProperties : MonoBehaviour
         yield return new WaitForSeconds(launchTime);
         // TODO: ADD SOUND AND VISUAL EFFECTS
         Instantiate(soundEnemyDeath, transform.position, Quaternion.Euler(0, 0, 0));
+        Instantiate(deathVFX, transform.position, Quaternion.Euler(0, 0, 0));
         Destroy(gameObject);
     }
     // Enemy wanders before triggering aggro against player.

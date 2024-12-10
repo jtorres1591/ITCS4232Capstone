@@ -15,6 +15,8 @@ public class PlayerProjectile : MonoBehaviour
     [SerializeField] private GameObject soundHit1;
     [SerializeField] private GameObject soundHit2;
     [SerializeField] private GameObject soundMiss;
+    // VFX
+    [SerializeField] private GameObject projectileVFX;
     // Start is called before the first frame update
     void Start()
     {
@@ -54,9 +56,11 @@ public class PlayerProjectile : MonoBehaviour
         if (collision.gameObject.CompareTag("Wall"))
         {
             Instantiate(soundMiss, transform.position, Quaternion.Euler(0, 0, 0));
+            Instantiate(projectileVFX, transform.position, Quaternion.Euler(0, 0, 0));
             Destroy(gameObject);
         }
         if (collision.gameObject.CompareTag("Enemy")) {
+            Instantiate(projectileVFX, transform.position, Quaternion.Euler(0, 0, 0));
             int soundChoice = Random.Range(0, 2);
             if (soundChoice == 0) Instantiate(soundHit1, transform.position, Quaternion.Euler(0, 0, 0));
             if (soundChoice == 1) Instantiate(soundHit2, transform.position, Quaternion.Euler(0, 0, 0));

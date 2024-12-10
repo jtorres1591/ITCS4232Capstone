@@ -7,10 +7,12 @@ public class Explosion : MonoBehaviour
     [SerializeField] private float lifeSpan = 0.3f;
     [SerializeField] private GameObject soundExplosion;
     [SerializeField] private GameObject soundWallBreak;
+    [SerializeField] private GameObject visualEffect;
     // Start is called before the first frame update
     void Start()
     {
         Destroy(gameObject, lifeSpan);
+        Instantiate(visualEffect, transform.position, Quaternion.Euler(0, 0, 0));
         Instantiate(soundExplosion, transform.position, Quaternion.Euler(0, 0, 0));
     }
 

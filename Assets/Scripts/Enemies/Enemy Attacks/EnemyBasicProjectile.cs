@@ -23,6 +23,8 @@ public class EnemyBasicProjectile : MonoBehaviour
     // Sound
     [SerializeField] protected GameObject soundFire;
     [SerializeField] protected GameObject soundDestroy;
+    // VFX
+    [SerializeField] protected GameObject projectileVFX;
     // Start is called before the first frame update
     protected virtual void Start()
     {
@@ -119,11 +121,13 @@ public class EnemyBasicProjectile : MonoBehaviour
             // Explode.
             if (explosive) Instantiate(explosion, transform.position, transform.rotation);
             if (!explosive) Instantiate(soundDestroy, transform.position, UnityEngine.Quaternion.Euler(0, 0, 0));
+            if (!explosive) Instantiate(projectileVFX, transform.position, UnityEngine.Quaternion.Euler(0, 0, 0));
             Destroy(gameObject);
         } else if (collision.gameObject.CompareTag("Enemy") && enemyContact) {
             // Explode.
             if (explosive) Instantiate(explosion, transform.position, transform.rotation);
             if (!explosive) Instantiate(soundDestroy, transform.position, UnityEngine.Quaternion.Euler(0, 0, 0));
+            if (!explosive) Instantiate(projectileVFX, transform.position, UnityEngine.Quaternion.Euler(0, 0, 0));
             Destroy(gameObject);
         }
         

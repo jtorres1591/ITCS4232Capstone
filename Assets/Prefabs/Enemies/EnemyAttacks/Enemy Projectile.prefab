@@ -133,6 +133,7 @@ MonoBehaviour:
   explosion: {fileID: 7915853202010329762, guid: 7721c2e3169cca34ea8cbc265f9a04fc, type: 3}
   soundFire: {fileID: 6053611783633549002, guid: 1d6fd2b66ef028548ab8797a504e8a83, type: 3}
   soundDestroy: {fileID: 6053611783633549002, guid: a45adf638aaf497409570557c3a5b337, type: 3}
+  projectileVFX: {fileID: 3856838711369755940, guid: 7ca7bee7386807040a045a89f34476d6, type: 3}
 --- !u!58 &-5435349640716128127
 CircleCollider2D:
   m_ObjectHideFlags: 0
