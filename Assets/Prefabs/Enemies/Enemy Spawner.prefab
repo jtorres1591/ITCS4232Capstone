@@ -100,6 +100,11 @@ MonoBehaviour:
   spawnRange: 200
   despawnRange: 250
   enemies:
-  - {fileID: 3902084034959172717, guid: 3326c9389bee8ca45a04a3490c0df0b7, type: 3}
-  - {fileID: 3902084034959172717, guid: 3326c9389bee8ca45a04a3490c0df0b7, type: 3}
-  - {fileID: 3902084034959172717, guid: 3326c9389bee8ca45a04a3490c0df0b7, type: 3}
+  - {fileID: 3902084034959172717, guid: fecfa227c1c01cf4382afbeb7a0d50f1, type: 3}
+  - {fileID: 3902084034959172717, guid: 44c7e4b3259794c4da2bcb779b8dffaf, type: 3}
+  - {fileID: 3902084034959172717, guid: cbc21667eb5aa884dac9d487608c0104, type: 3}
+  - {fileID: 3902084034959172717, guid: d4c46e80846d0444f919528a03cc7033, type: 3}
+  - {fileID: 3902084034959172717, guid: 7727fd14d8a3d7a46b3ca323bd634e79, type: 3}
+  - {fileID: 3902084034959172717, guid: 67cdce672f12cb5459aea904a3e1bc74, type: 3}
+  - {fileID: 3902084034959172717, guid: f1422810214f5e6418a1604e1a857840, type: 3}
+  - {fileID: 3902084034959172717, guid: 0f4f4b11ab85a1645be2e1b2fb3ade54, type: 3}

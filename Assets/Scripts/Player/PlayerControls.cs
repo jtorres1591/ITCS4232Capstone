@@ -277,7 +277,15 @@ public class PlayerControls : MonoBehaviour
             overHeal=false;
             alreadyOverHeal = false;
             StopCoroutine(OverHeal(overHealTime));
-            healthText.color = Color.white;
+            // Red text for low health.
+            if (health <= 1)
+            {
+                healthText.color = Color.red;
+            }
+            else
+            {
+                healthText.color = Color.white;
+            }
         }
         healthText.text = "Health: " + health;
     }

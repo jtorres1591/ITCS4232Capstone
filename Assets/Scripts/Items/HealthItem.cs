@@ -17,7 +17,8 @@ public class HealthItem : MonoBehaviour
     void Start()
     {
         // Get player script.
-        playerScript = GameObject.Find("Player").GetComponent<PlayerControls>();
+        GameObject playerReference = GameObject.Find("Player");
+        if(playerReference != null) playerScript = playerReference.GetComponent<PlayerControls>();
         // Get collider.
         itemCollider = GetComponent<CircleCollider2D>();
         // Destroy after Lifespan is over.
