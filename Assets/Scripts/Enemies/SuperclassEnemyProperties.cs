@@ -175,22 +175,26 @@ public class SuperclassEnemyProperties : MonoBehaviour
         attackCooldown = true;
         yield return new WaitForSeconds(attackInterval);
         // EDIT HERE TO CHANGE ATTACK TYPE.
-        if (currentAction != EnemyAction.Launched && player.activeSelf)
+        if (player != null)
         {
-            // Select attack type based on enum.
-            switch (selectedEnemyProjectile) {
-                case SelectEnemyProjectile.None:
-                    break;
-                case SelectEnemyProjectile.Basic:
-                    BasicAttack(); break;
-                case SelectEnemyProjectile.Triple:
-                    TripleShot(); break;
-                case SelectEnemyProjectile.X:
-                    XShot(); break;
-                case SelectEnemyProjectile.Cross:
-                    CrossShot(); break;
-                case SelectEnemyProjectile.Bomb:
-                    Bomb(); break;
+            if (currentAction != EnemyAction.Launched && player.activeSelf)
+            {
+                // Select attack type based on enum.
+                switch (selectedEnemyProjectile)
+                {
+                    case SelectEnemyProjectile.None:
+                        break;
+                    case SelectEnemyProjectile.Basic:
+                        BasicAttack(); break;
+                    case SelectEnemyProjectile.Triple:
+                        TripleShot(); break;
+                    case SelectEnemyProjectile.X:
+                        XShot(); break;
+                    case SelectEnemyProjectile.Cross:
+                        CrossShot(); break;
+                    case SelectEnemyProjectile.Bomb:
+                        Bomb(); break;
+                }
             }
         }
     }
