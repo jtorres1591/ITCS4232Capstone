@@ -95,7 +95,7 @@ public class SuperclassEnemyProperties : MonoBehaviour
     [SerializeField] protected SpriteRenderer spriteRenderer;
     // Sprites.
     [SerializeField] protected Sprite[] enemySprite;
-    // 
+    // Animation Cycle.
     protected float animationCounter = 0;
     // Start is called before the first frame update
     protected void Start()

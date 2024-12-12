@@ -204,7 +204,7 @@ MonoBehaviour:
   tripleShotOffset: 35
   damageCooldown: 0.1
   dropItem: {fileID: 2925373630308796168, guid: fb3073b1b9023a94d8902e57076570f8, type: 3}
-  dropRate: 32
+  dropRate: 24
   launchMaterial: {fileID: 6200000, guid: f1627a6952c07394eb0cbe81293b32b5, type: 2}
   selectedEnemyPeacefulAction: 1
   selectedEnemyAggroAction: 3

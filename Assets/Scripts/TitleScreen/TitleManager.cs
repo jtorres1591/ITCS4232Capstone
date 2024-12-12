@@ -9,6 +9,9 @@ public class TitleManager : MonoBehaviour
 {
     public GameObject mainMenu;
     public GameObject instructions;
+    public GameObject instructions2;
+    public GameObject instructions3;
+    public GameObject instructions4;
     public GameObject credits;
     // Sound.
     public GameObject soundButton;
@@ -55,7 +58,43 @@ public class TitleManager : MonoBehaviour
         Instantiate(soundButton, transform.position, Quaternion.Euler(0, 0, 0));
         mainMenu.SetActive(false);
         credits.SetActive(false);
+        instructions2.SetActive(false);
+        instructions3.SetActive(false);
+        instructions4.SetActive(false);
         instructions.SetActive(true);
+    }
+    // Swap to Instructions Screen.
+    public void Instructions2()
+    {
+        Instantiate(soundButton, transform.position, Quaternion.Euler(0, 0, 0));
+        mainMenu.SetActive(false);
+        credits.SetActive(false);
+        instructions.SetActive(false);
+        instructions3.SetActive(false);
+        instructions4.SetActive(false);
+        instructions2.SetActive(true);
+    }
+    // Swap to Instructions Screen.
+    public void Instructions3()
+    {
+        Instantiate(soundButton, transform.position, Quaternion.Euler(0, 0, 0));
+        mainMenu.SetActive(false);
+        credits.SetActive(false);
+        instructions.SetActive(false);
+        instructions2.SetActive(false);
+        instructions4.SetActive(false);
+        instructions3.SetActive(true);
+    }
+    // Swap to Instructions Screen.
+    public void Instructions4()
+    {
+        Instantiate(soundButton, transform.position, Quaternion.Euler(0, 0, 0));
+        mainMenu.SetActive(false);
+        credits.SetActive(false);
+        instructions.SetActive(false);
+        instructions2.SetActive(false);
+        instructions3.SetActive(false);
+        instructions4.SetActive(true);
     }
     // Return to main menu.
     public void BackButton()
@@ -63,6 +102,9 @@ public class TitleManager : MonoBehaviour
         Instantiate(soundButton, transform.position, Quaternion.Euler(0, 0, 0));
         mainMenu.SetActive(true);
         instructions.SetActive(false);
+        instructions2.SetActive(false);
+        instructions3.SetActive(false);
+        instructions4.SetActive(false);
         credits.SetActive(false);
     }
     // Swap to Credits Screen.
@@ -70,6 +112,9 @@ public class TitleManager : MonoBehaviour
         Instantiate(soundButton, transform.position, Quaternion.Euler(0, 0, 0));
         credits.SetActive(true);
         instructions.SetActive(false);
+        instructions2.SetActive(false);
+        instructions3.SetActive(false);
+        instructions4.SetActive(false);
         mainMenu.SetActive(false);
     }
 }
