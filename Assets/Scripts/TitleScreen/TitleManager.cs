@@ -7,18 +7,25 @@ using UnityEngine.Rendering;
 
 public class TitleManager : MonoBehaviour
 {
+    // Canvas References.
     public GameObject mainMenu;
     public GameObject instructions;
     public GameObject instructions2;
     public GameObject instructions3;
     public GameObject instructions4;
     public GameObject credits;
+    public TextMeshProUGUI highScoreText;
+    // High Score Manager. Will need to be initialized in start.
+    private HighScoreManager highScoreManager;
+    
     // Sound.
     public GameObject soundButton;
     // Start is called before the first frame update
     void Start()
     {
-        
+        highScoreManager = GameObject.Find("HighScoreManager").GetComponent<HighScoreManager>();
+        // Set High Score Text.
+        highScoreText.text = "High Score: " + highScoreManager.GetHighScore();
     }
 
     // Update is called once per frame
